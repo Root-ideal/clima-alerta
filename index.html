@@ -1,0 +1,2108 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+#ca{font-family:Inter,Arial,sans-serif;background:#07101d;color:#eef5ff;padding:0;border-radius:0;max-width:none;width:100%;margin:0;min-height:100vh}
+html.landing-fixed,body.landing-fixed{height:100%;margin:0;overflow:hidden}
+#ca #auth-screen{height:100vh;min-height:100vh;overflow:hidden}
+#ca *{box-sizing:border-box}
+#ca button,#ca input{font:inherit}
+#ca input{width:100%;padding:12px;background:#091626;color:#eef5ff;border:1px solid #354963;border-radius:9px;margin:6px 0 13px}
+#ca button{border:0;border-radius:9px;padding:11px 15px;font-weight:700;cursor:pointer}
+#ca button:hover{filter:brightness(1.15)}
+#ca .primary{background:#66c5ff;color:#07101d}
+#ca .secondary{background:#24364d;color:#fff;border:1px solid #3a506c}
+#ca .danger{background:#a72d43;color:white}
+#ca .panel{background:#101d2e;border:1px solid #293c54;border-radius:14px;padding:18px;margin-bottom:15px;min-width:0}
+#ca .muted{font-size:12px;color:#9bacc3;line-height:1.6}
+#ca h1{font-size:clamp(25px,4vw,37px);margin:0 0 8px}
+#ca h2{font-size:18px;margin:0 0 13px}
+#ca .eyebrow{color:#66c5ff;font-size:10px;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
+#ca .brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+#ca .logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#ffe16d,#ff8555);display:grid;place-items:center;font-size:25px}
+#ca .landing-hero{position:relative;isolation:isolate;height:100vh;min-height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:120px 24px 88px;background:#1a3327;text-align:center}
+#ca .landing-slides{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;overflow:hidden;background:#1a3327}
+#ca .landing-slides:after{content:"";position:absolute;inset:0;z-index:1;background:rgba(0,0,0,.45);pointer-events:none}
+#ca .landing-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease-in-out}
+#ca .landing-slide.is-active{opacity:1}
+#ca .landing-header{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px clamp(18px,5vw,76px);border-bottom:1px solid rgba(255,255,255,.18);background:linear-gradient(180deg,rgba(5,18,14,.32),transparent)}
+#ca .landing-brand{display:flex;align-items:center;gap:11px;flex:0 0 auto;color:#fff;text-decoration:none}
+#ca .landing-mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(178,224,164,.75);border-radius:13px;background:rgba(38,94,58,.68);font-size:22px}
+#ca .landing-brand strong{display:block;font-size:15px;letter-spacing:.2px}
+#ca .landing-brand small{display:block;margin-top:3px;color:rgba(255,255,255,.72);font-size:9px;letter-spacing:1.25px;text-transform:uppercase}
+#ca .landing-controls{display:flex;align-items:center;justify-content:flex-end;gap:clamp(12px,2.1vw,30px)}
+#ca .theme-toggle{display:inline-grid;width:40px;height:40px;place-items:center;padding:0;border:1px solid rgba(255,255,255,.4);border-radius:8px;background:rgba(15,27,22,.3);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);color:#fff;transition:background .2s ease,border-color .2s ease,transform .2s ease,color .2s ease}
+#ca .theme-toggle:hover{transform:translateY(-1px);background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.68)}
+#ca .theme-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s ease,color .2s ease}
+#ca .theme-toggle .theme-sun{display:none}
+#ca .theme-toggle .theme-moon{display:block}
+#ca.modo-dia .theme-toggle .theme-sun{display:block}
+#ca.modo-dia .theme-toggle .theme-moon{display:none}
+#ca .theme-toggle:hover svg{transform:rotate(24deg)}
+#ca .theme-toggle:focus-visible{outline:2px solid #b8e49d;outline-offset:3px}
+#ca .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#ca .language-select{display:flex;align-items:center;gap:6px;color:#fff;font-size:10px;font-weight:700}
+#ca .language-select select{width:auto;margin:0;padding:7px 8px;border:1px solid rgba(255,255,255,.4);border-radius:7px;background:rgba(8,24,17,.42);color:#fff;font:inherit}
+#ca .language-select option{color:#07101d}
+#ca .landing-copy{position:relative;z-index:2;width:min(100%,880px);margin:auto}
+#ca .landing-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:22px;padding:9px 13px;border:1px solid rgba(210,240,194,.5);border-radius:999px;background:rgba(15,38,25,.35);color:#e1f4d8;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+#ca .landing-kicker:before{content:"";width:7px;height:7px;border-radius:50%;background:#a6db86;box-shadow:0 0 12px #a6db86}
+#ca .landing-title{margin:0;color:#fff;font-family:Georgia,"Times New Roman",serif;font-size:clamp(54px,9vw,112px);font-weight:500;letter-spacing:-4px;line-height:.98;text-shadow:0 4px 28px rgba(0,0,0,.25)}
+#ca .landing-title span{display:block;color:#b8e49d;font-style:italic}
+#ca .landing-subtitle{max-width:640px;margin:24px auto 0;color:rgba(255,255,255,.91);font-size:clamp(15px,2vw,19px);line-height:1.7;text-shadow:0 2px 12px rgba(0,0,0,.32)}
+#ca .landing-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+#ca .landing-actions a,#ca .landing-actions button{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:9px;padding:0 20px;border:1px solid transparent;border-radius:8px;font-size:13px;font-weight:800;text-decoration:none;transition:transform .18s ease,background .18s ease}
+#ca .landing-actions a:hover,#ca .landing-actions button:hover{transform:translateY(-2px)}
+#ca .landing-actions .landing-primary{background:#b8e49d;color:#102619}
+#ca .login-modal{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px;background:rgba(0,0,0,.4);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#ca .heat-alert-modal{position:fixed;inset:0;z-index:10001;display:grid;place-items:center;overflow-y:auto;padding:20px;background:rgba(0,0,0,.56);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+#ca .heat-alert-modal[hidden]{display:none}
+#ca .heat-alert-card{position:relative;width:min(100%,520px);padding:28px;border:1px solid #e66c62;border-radius:16px;background:#241923;color:#f8fafc;box-shadow:0 20px 70px #0009}
+#ca .heat-alert-card h2{margin:0 44px 12px 0;color:#ff9e74;font-size:22px}
+#ca .heat-alert-message{margin:0 0 20px;color:#f1dfe0;font-size:16px;line-height:1.6}
+#ca .heat-alert-close{position:absolute;top:12px;right:12px;width:40px;height:40px;padding:0;border:1px solid #75434b;background:#39252d;color:#fff;font-size:25px;line-height:1}
+#ca .heat-alert-stop{background:#a72d43;color:#fff}
+#ca .heat-alert-close:focus-visible,#ca .heat-alert-stop:focus-visible{outline:2px solid #ffb08d;outline-offset:3px}
+#ca .login-modal-close{position:fixed;top:16px;right:20px;z-index:1;border:1px solid rgba(255,255,255,.35);background:rgba(16,29,46,.88);color:#eef5ff}
+#ca .auth-card{align-self:center;max-width:480px;width:100%;margin:auto}
+#ca .auth-card h2{font-size:24px}
+#ca .login-modal .auth-card{border-color:#354963;background:#101d2e;color:#eef5ff;box-shadow:0 16px 50px rgba(0,0,0,.3);transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca .login-modal .auth-card .muted{color:#b3c0d0;transition:color .25s ease}
+#ca .login-modal .auth-card .field-hint{margin-left:5px;color:#9bacc3;font-size:11px;font-weight:400}
+#ca .login-modal .auth-card input{background:#091626;color:#eef5ff;border-color:#354963;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca .login-modal .auth-card .secondary{background:#24364d;color:#eef5ff;border-color:#3a506c;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca .login-modal .auth-card .linkbtn{color:#8bd3ff}
+#ca .login-modal .auth-msg{color:#8b5b00}
+#ca .login-modal .auth-card .eyebrow{color:#8bd3ff;transition:color .25s ease}
+#ca #dashboard{max-width:1450px;min-height:100vh;margin:0 auto;padding:clamp(12px,2vw,26px)}
+#ca.modo-dia{background:#f2f5ef;color:#1a1a1a}
+#ca.modo-dia .landing-slides:after{background:transparent}
+#ca.modo-dia .landing-header{border-bottom-color:rgba(18,45,29,.2);background:linear-gradient(180deg,rgba(255,255,255,.28),transparent)}
+#ca.modo-dia .landing-brand,#ca.modo-dia .landing-brand small,#ca.modo-dia .language-select{color:#183024}
+#ca.modo-dia .landing-mark{background:rgba(255,255,255,.65);border-color:rgba(38,94,58,.38)}
+#ca.modo-dia .theme-toggle{background:rgba(255,255,255,.62);border-color:rgba(24,48,36,.28);color:#183024}
+#ca.modo-dia .theme-toggle:hover{background:rgba(255,255,255,.86);border-color:rgba(24,48,36,.48)}
+#ca.modo-dia .login-modal{background:rgba(0,0,0,.4)}
+#ca.modo-dia .heat-alert-modal{background:rgba(15,23,42,.48)}
+#ca.modo-dia .heat-alert-card{border-color:#e7a19a;background:#fff;color:#0f172a;box-shadow:0 20px 70px rgba(15,23,42,.28)}
+#ca.modo-dia .heat-alert-card h2{color:#991b1b}
+#ca.modo-dia .heat-alert-message{color:#3f1d24}
+#ca.modo-dia .heat-alert-close{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}
+#ca.modo-dia .login-modal-close{border-color:#cbd5e1;background:rgba(255,255,255,.9);color:#0f172a}
+#ca.modo-dia .login-modal .auth-card{border-color:#dbe5d8;background:#fff;color:#0f172a;box-shadow:0 16px 50px rgba(24,54,34,.14)}
+#ca.modo-dia .login-modal .auth-card .muted{color:#475569}
+#ca.modo-dia .login-modal .auth-card .field-hint{color:#64748b}
+#ca.modo-dia .login-modal .auth-card input{background:#f8fafc;color:#0f172a;border-color:#cbd5e1}
+#ca.modo-dia .login-modal .auth-card input::placeholder{color:#64748b}
+#ca.modo-dia .login-modal .auth-card .primary{background:#426b38;color:#fff;border:1px solid #35582e}
+#ca.modo-dia .login-modal .auth-card .secondary{background:#e8efe5;color:#24432c;border-color:#cbd9c7}
+#ca.modo-dia .login-modal .auth-card .linkbtn{color:#285d36}
+#ca.modo-dia .login-modal .auth-card .eyebrow{color:#426b38}
+#ca.modo-dia .login-modal .auth-card .check{background:#f0fdf4;border-color:#bbf7d0;color:#1e293b;transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca.modo-dia .landing-kicker{background:rgba(255,255,255,.48);border-color:rgba(24,48,36,.25);color:#183024}
+#ca.modo-dia .landing-kicker:before{background:#527d45;box-shadow:0 0 12px rgba(82,125,69,.45)}
+#ca.modo-dia .landing-title{color:#183024;text-shadow:0 1px 2px rgba(255,255,255,.8)}
+#ca.modo-dia .landing-title span{color:#426b38}
+#ca.modo-dia .landing-subtitle{color:#1a1a1a;text-shadow:0 1px 2px rgba(255,255,255,.8)}
+#ca.modo-dia .landing-actions .landing-primary{background:#426b38;color:#fff}
+#ca.modo-dia #dashboard{background:#f2f5ef;color:#1a1a1a}
+#ca.modo-dia #dashboard .panel,#ca.modo-dia #dashboard .hero,#ca.modo-dia #dashboard .tempbox,#ca.modo-dia #dashboard .hour,#ca.modo-dia #dashboard .advice,#ca.modo-dia #dashboard .notice,#ca.modo-dia #dashboard .recommendation-card,#ca.modo-dia #dashboard .profile-chip,#ca.modo-dia #dashboard .consolidated-report{background:#fff;border-color:#d6e0d4;color:#1a1a1a}
+#ca.modo-dia #dashboard .hero{background:linear-gradient(120deg,#e5efe2,#f8faf6);border-color:#cfddca}
+#ca.modo-dia #dashboard .muted,#ca.modo-dia #dashboard .recommendation-reason,#ca.modo-dia #dashboard .vuln-status{color:#58685d}
+#ca.modo-dia #dashboard .eyebrow{color:#426b38}
+#ca.modo-dia #dashboard .risk-badge.low,#ca.modo-dia #dashboard .low{color:#176b4a;background:#e8f7ef;border-color:#8ec9a9}
+#ca.modo-dia #dashboard .risk-badge.medium,#ca.modo-dia #dashboard .medium{color:#805600;background:#fff6dc;border-color:#dfc26f}
+#ca.modo-dia #dashboard .risk-badge.high,#ca.modo-dia #dashboard .high{color:#a62339;background:#fff0f1;border-color:#e4a0aa}
+#ca.modo-dia #dashboard input:not([type="checkbox"]),#ca.modo-dia #dashboard .map-layers select,#ca.modo-dia #dashboard .dashboard-language select{background:#fff;color:#1a1a1a;border-color:#c8d3c7}
+#ca.modo-dia #dashboard .secondary{background:#e8efe5;color:#24432c;border-color:#cbd9c7}
+#ca.modo-dia #dashboard .primary{background:#dcefd4;color:#183024;border:1px solid #b5d1a9}
+#ca.modo-dia #dashboard .profile-chip.selected{background:#edf5e8;border-color:#87ad7b;color:#183024}
+#ca.modo-dia #dashboard .map-layers,#ca.modo-dia #dashboard .map-legend{background:rgba(255,255,255,.95);border-color:#cbd9c7}
+#ca.modo-dia #dashboard .map-layers span,#ca.modo-dia #dashboard .map-legend-item{color:#1a1a1a}
+#ca.modo-dia #dashboard .map-layers select{background:#fff;color:#1a1a1a}
+#ca.modo-dia #dashboard .temp{color:#183024}
+#ca.modo-dia #dashboard .risk{color:#1a1a1a}
+#ca.modo-dia #dashboard th{color:#58685d}
+#ca.modo-dia #dashboard .history-panel #history td:not(:last-child),#ca.modo-dia #dashboard .history-panel #history td:first-child:not(:last-child){color:#34443a}
+#ca.modo-dia #dashboard .history-panel #history td[colspan]{color:#58685d}
+#ca.modo-dia #dashboard .history-panel #history tr:hover td{background:#edf3ea;border-bottom-color:#cfddca}
+#ca.modo-dia #dashboard .top,#ca.modo-dia #dashboard .head{color:#1a1a1a}
+#ca.modo-dia #dashboard h1,#ca.modo-dia #dashboard h2,#ca.modo-dia #dashboard h3,#ca.modo-dia #dashboard .metric,#ca.modo-dia #dashboard label{color:#1a1a1a}
+#ca.modo-dia #dashboard .risk,#ca.modo-dia #dashboard .risk-badge{color:#1a1a1a}
+#ca.modo-dia #dashboard .emergency-box{background:#fff1f2;border-color:#e4a0aa;color:#1a1a1a}
+#ca.modo-dia #dashboard .auto-sound-setting{background:#f1f5f9;border:1px solid #cbd5e1;color:#0f172a}
+#ca.modo-dia #dashboard .auto-sound-setting input{accent-color:#426b38}
+#ca.modo-dia #dashboard .emergency-box{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+#ca.modo-dia #dashboard .emergency-box .emergency-heading,#ca.modo-dia #dashboard .emergency-box .emergency-heading strong,#ca.modo-dia #dashboard .emergency-box p,#ca.modo-dia #dashboard .emergency-box li,#ca.modo-dia #dashboard .emergency-box .emergency-lines a{color:#991b1b}
+#ca.modo-dia #dashboard .emergency-box .emergency-heading svg{stroke:#991b1b}
+#ca.modo-dia #dashboard .emergency-box .emergency-lines li{background:#fff;border-color:#e4a0aa;color:#991b1b}
+#ca.modo-dia #dashboard .emergency-lines a{color:#8f1d32}
+#ca.modo-dia #dashboard .vuln-track{background:#e2e8e1;border-color:#c8d3c7}
+#ca.modo-dia #dashboard .pdf-icon-button{background:#e8efe5;color:#24432c;border-color:#cbd9c7}
+#ca.modo-dia #dashboard .pdf-button{color:#183024}
+#ca.modo-dia #dashboard .consolidated-report h2,#ca.modo-dia #dashboard .consolidated-report p{color:#2b3a42}
+#ca.modo-dia #dashboard .consolidated-report .pdf-button{border:1px solid #426b38;background:#dcefd4;color:#183024}
+#ca.modo-dia #dashboard .consolidated-report .pdf-button:hover{background:#cde5c2}
+#ca.modo-dia .footer{color:#4a5568}
+#ca #dashboard .panel,#ca #dashboard .hero,#ca #dashboard .tempbox,#ca #dashboard .hour,#ca #dashboard .advice,#ca #dashboard .notice,#ca #dashboard .recommendation-card,#ca #dashboard .profile-chip,#ca #dashboard .consolidated-report,#ca #dashboard .muted,#ca #dashboard h1,#ca #dashboard h2,#ca #dashboard h3,#ca #dashboard .metric,#ca #dashboard input,#ca #dashboard button,#ca #dashboard th,#ca #dashboard td{transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca #dashboard .consolidated-report p,#ca #dashboard .consolidated-report h2,#ca #dashboard .consolidated-report .pdf-button svg,#ca .footer{transition:background-color .25s ease,border-color .25s ease,color .25s ease}
+#ca #dashboard .theme-toggle{margin-left:auto}
+#ca .auth-tabs{display:flex;gap:8px;margin:18px 0}
+#ca .auth-tabs button{flex:1}
+#ca .auth-msg{font-size:12px;line-height:1.5;margin:8px 0;color:#ffcc55;min-height:18px}
+#ca .linkbtn{background:none;color:#66c5ff;padding:4px;text-decoration:underline}
+#ca .top,#ca .head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#ca .top{margin-bottom:20px}
+#ca #dashboard .dashboard-language select{background:#091626;color:#eef5ff}
+#ca .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:15px;padding:20px;background:linear-gradient(120deg,#17334f,#101d2e);border:1px solid #2b4966;border-radius:15px;margin-bottom:15px}
+#ca .tempbox{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#071523;border-radius:12px;padding:20px}
+#ca .temp{font-size:65px;font-weight:800;letter-spacing:-4px}
+#ca .risk{display:inline-block;padding:7px 11px;border-radius:25px;font-size:11px;font-weight:800;margin:8px 0}
+#ca .low{color:#35d99b;background:#35d99b18;border:1px solid #35d99b77}
+#ca .medium{color:#ffd05a;background:#ffd05a18;border:1px solid #ffd05a77}
+#ca .high{color:#ff6474;background:#ff647418;border:1px solid #ff647477}
+#ca .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+#ca .metric{font-size:27px;font-weight:800;margin:8px 0}
+#ca .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+#ca .search{display:flex;gap:8px;flex-wrap:wrap}
+#ca .search input{flex:1;min-width:170px}
+#ca .map-stage{position:relative}
+#ca .map{height:320px;border-radius:10px;overflow:hidden;background:#17263a}
+#ca .map-layers{position:absolute;top:10px;right:10px;z-index:1100;display:grid;gap:4px;width:250px;max-width:calc(100% - 20px);padding:9px;background:#101d2eed;border:1px solid #3a506c;border-radius:9px;box-shadow:0 4px 14px #0006}
+#ca .map-layers span{font-size:10px;font-weight:700;color:#b8c9dc}
+#ca .map-layers select{width:100%;padding:7px 9px;background:#091626;color:#eef5ff;border:1px solid #354963;border-radius:6px;font:inherit;font-size:11px}
+#ca .map-legend{position:absolute;left:10px;bottom:10px;z-index:1100;display:flex;flex-wrap:wrap;gap:6px 10px;max-width:calc(100% - 20px);padding:8px 10px;background:#101d2eed;border:1px solid #3a506c;border-radius:8px;box-shadow:0 4px 14px #0006}
+#ca .map-legend-item{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:10px;color:#eef5ff}
+#ca .map-legend-swatch{width:9px;height:9px;flex:0 0 9px;border-radius:50%}
+#ca .hours{display:flex;gap:8px;overflow-x:auto}
+#ca .hour{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:132px;min-width:88px;text-align:center;background:#17263a;border-radius:10px;padding:12px}
+#ca .hour strong{display:block;font-size:22px;margin:8px 0}
+#ca .forecast-level{display:inline-flex;align-items:center;gap:4px;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;line-height:1.2}
+#ca .forecast-level.low{background:#173d30;color:#7ce6a0}
+#ca .forecast-level.medium{background:#493b1e;color:#ffe08a}
+#ca .forecast-level.high{background:#48252d;color:#ff9ba5}
+#ca.modo-dia .forecast-level.low{background:#e8f5e9;color:#216e39}
+#ca.modo-dia .forecast-level.medium{background:#fff4d6;color:#805500}
+#ca.modo-dia .forecast-level.high{background:#fde8e7;color:#a82121}
+#ca .advice{padding:11px;background:#17263a;border-radius:9px;margin:8px 0;font-size:12px;line-height:1.5}
+#ca .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+#ca .log{max-height:190px;overflow:auto}
+#ca .logline{font-size:11px;padding:9px 0;border-bottom:1px solid #293c54}
+#ca .alarm-light{height:8px;border-radius:10px;background:#344257;margin:12px 0}
+#ca .alarm-light.on{background:#ff5269;box-shadow:0 0 20px #ff5269}
+#ca .notice{background:#122238;border:1px solid #30465e;border-radius:10px;padding:12px;font-size:11px;line-height:1.6;color:#b8c9dc;margin:12px 0}
+#ca table{width:100%;border-collapse:collapse;font-size:12px}
+#ca td,#ca th{padding:10px;border-bottom:1px solid #293c54;text-align:left;white-space:nowrap}
+#ca th{color:#9bacc3}
+#ca .history-panel #history tr{transition:background-color .16s ease}
+#ca .history-panel #history td:not(:last-child){color:#f3f4f6}
+#ca .history-panel #history td:first-child:not(:last-child){color:#9ca3af}
+#ca .history-panel #history td[colspan]{color:#9ca3af}
+#ca .history-panel #history tr:hover td{background:rgba(255,255,255,.1);border-bottom-color:rgba(255,255,255,.18)}
+#ca .history-panel .head button,#ca .history-panel .actions button{color:#d1d5db}
+#ca .pdf-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+#ca .pdf-button svg,#ca .pdf-icon-button svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#ca .consolidated-report{display:grid;justify-items:center;gap:12px;margin-top:16px;padding:24px;border:1px solid #354963;border-radius:10px;background:#101d2e;text-align:center}
+#ca .consolidated-report h2{margin:0;font-size:20px}
+#ca .consolidated-report p{max-width:850px;margin:0;color:#b8c9dc;font-size:13px;line-height:1.6}
+#ca .consolidated-report .pdf-button{width:min(100%,440px);min-height:48px;justify-content:center;border:1px solid #7dd3fc;background:#66c5ff;color:#07101d}
+#ca .consolidated-report .pdf-button:hover{background:#8bd5ff}
+#ca .pdf-icon-button{display:inline-grid;place-items:center;padding:7px;background:#24364d;color:#d1d5db;border:1px solid #3a506c;border-radius:7px;cursor:pointer}
+#ca .pdf-icon-button:hover{background:#304761;color:#fff}
+#ca .tablewrap{overflow-x:auto}
+#ca .hidden{display:none!important}
+#ca .check{display:flex;gap:8px;align-items:center;background:#17263a;border:1px solid #293c54;padding:10px;border-radius:9px;font-size:12px}
+#ca .check input{width:auto;margin:0}
+#ca .options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#ca .profile-chip{position:relative;display:flex;align-items:center;gap:10px;min-height:48px;padding:10px 12px;border:1px solid #354963;border-radius:9px;background:#101d2e;color:#d1d5db;font-size:12px;line-height:1.35;cursor:pointer;transition:background-color .16s ease,border-color .16s ease,color .16s ease}
+#ca .profile-chip svg{width:21px;height:21px;flex:0 0 21px;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;fill:none;color:#9ca3af}
+#ca .profile-chip input{position:absolute;width:1px;height:1px;margin:0;padding:0;border:0;opacity:0}
+#ca .profile-chip:hover{border-color:#68788e;background:#142338}
+#ca .profile-chip.selected{border-color:#9ca3af;background:rgba(255,255,255,.08);color:#f3f4f6}
+#ca .profile-chip.selected svg{color:#d1d5db}
+#ca .profile-chip:focus-within{outline:2px solid #9ca3af;outline-offset:2px}
+#ca .risk-badge{display:inline-block;padding:5px 9px;border-radius:20px;font-size:10px;font-weight:800;letter-spacing:.4px}
+#ca .risk-badge.low{color:#35d99b;background:#35d99b18;border:1px solid #35d99b77}
+#ca .risk-badge.medium{color:#ffd05a;background:#ffd05a18;border:1px solid #ffd05a77}
+#ca .risk-badge.high{color:#ff6474;background:#ff647418;border:1px solid #ff647477}
+#ca .vuln-meter{margin:12px 0 8px}
+#ca .vuln-meter-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;margin-bottom:8px}
+#ca .vuln-track{height:12px;background:#293c54;border-radius:99px;overflow:hidden;border:1px solid #3a506c}
+#ca .vuln-fill{height:100%;width:0%;background:#35d99b;border-radius:99px;transition:width .3s ease,background .3s ease}
+#ca .vuln-status{font-size:11px;color:#9bacc3;margin-top:6px}
+#ca .recommendation-card{background:#13243a;border:1px solid #2b405a;border-left:4px solid #66c5ff;border-radius:10px;padding:12px;margin:9px 0}
+#ca .recommendation-card.priority-medium{border-left-color:#ffd05a}
+#ca .recommendation-card.priority-high{border-left-color:#ff6474}
+#ca .recommendation-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+#ca .priority-tag{font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:20px;padding:4px 8px;background:#66c5ff20;color:#66c5ff}
+#ca .priority-medium .priority-tag{background:#ffd05a20;color:#ffd05a}
+#ca .priority-high .priority-tag{background:#ff647420;color:#ff6474}
+#ca .recommendation-reason{font-size:11px;color:#9bacc3;margin-top:6px;line-height:1.5}
+#ca .emergency-box{background:#321b27;border:1px solid #773247;border-radius:10px;padding:12px;margin-top:12px;font-size:12px;line-height:1.6}
+#ca .emergency-heading{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+#ca .emergency-heading svg{width:19px;height:19px;flex:0 0 19px;stroke:#f3f4f6;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#ca .emergency-box p{margin:0 0 10px;color:#e5e7eb}
+#ca .emergency-lines{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+#ca .emergency-lines li{display:flex;justify-content:space-between;gap:12px;padding:7px 9px;border:1px solid #773247;border-radius:6px;background:rgba(0,0,0,.12)}
+#ca .emergency-lines a{color:#fff;font-weight:800;text-decoration:underline;text-underline-offset:2px}
+#ca .footer{text-align:center;color:#788ba5;font-size:11px;padding:14px}
+#ca .welcome-banner{padding:14px 18px;margin:0 0 14px;border:1px solid #293c54;border-radius:12px;background:#101d2e;font-size:17px;font-weight:700}
+#ca .welcome-banner strong{color:#b8e49d}
+#ca .dashboard-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;padding:8px;border:1px solid #293c54;border-radius:12px;background:#101d2e}
+#ca .dashboard-tab{flex:1 1 125px;background:transparent;color:#b8c9dc;border:1px solid transparent}
+#ca .dashboard-tab[aria-selected="true"]{background:#24364d;border-color:#66c5ff;color:#fff}
+#ca .logbook-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:14px}
+#ca .logbook-panel{display:flex;height:100%;flex-direction:column;margin-bottom:0}
+#ca .logbook-panel .tablewrap,#ca .logbook-panel .log{flex:1;min-height:220px}
+#ca .logbook-panel .tablewrap{max-height:380px}
+#ca .logbook-panel .log{max-height:380px}
+#ca .dashboard-view[hidden]{display:none!important}
+#ca .profile-level{max-width:760px}
+#ca .profile-progress{height:12px;margin:12px 0 7px;overflow:hidden;border-radius:99px;background:#293c54}
+#ca .profile-progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#35d99b,#ff9e4a,#ff6474);transition:width .3s ease}
+#ca .badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-top:12px}
+#ca .game-badge{box-sizing:border-box;min-width:0;height:auto;padding:14px;border:1px solid #293c54;border-radius:12px;background:#13243a;overflow-wrap:anywhere}
+#ca .game-badge.is-unlocked{border:1px solid #4a7c59;background:#19352d}
+#ca .game-badge.is-unlocked .game-badge-icon{filter:none}
+#ca .game-badge.is-locked{filter:grayscale(1);opacity:.58}
+#ca .game-badge-icon{display:block;margin-bottom:8px;font-size:24px}
+#ca .game-badge strong{display:block;margin-bottom:4px}
+#ca .game-badge-status{font-size:11px;color:#9bacc3}
+#ca .achievement-toast{position:fixed;top:18px;right:18px;z-index:10000;display:grid;grid-template-columns:42px minmax(0,1fr) 32px;align-items:start;gap:12px;width:min(410px,calc(100vw - 32px));padding:15px;border:1px solid #4a7c59;border-radius:14px;background:#10251f;color:#eef5ff;box-shadow:0 12px 36px #0005;cursor:pointer;opacity:0;transform:translateY(-12px);transition:opacity .22s ease,transform .22s ease}
+#ca .achievement-toast[hidden]{display:none}
+#ca .achievement-toast.is-visible{opacity:1;transform:translateY(0)}
+#ca .achievement-toast-icon{font-size:30px;line-height:1.2}
+#ca .achievement-toast-title{display:block;margin-bottom:4px;color:#b8e49d;font-size:14px}
+#ca .achievement-toast-description{display:block;color:#c5d3ce;font-size:12px;line-height:1.45}
+#ca .achievement-toast-close{width:32px;height:32px;padding:0;background:transparent;color:inherit;font-size:20px;line-height:1}
+#ca .achievement-toast-close:hover{background:#ffffff18}
+#ca .achievement-toast:focus-visible{outline:2px solid #b8e49d;outline-offset:3px}
+#ca.modo-dia .achievement-toast{border-color:#4a7c59;background:#eef7f2;color:#183024;box-shadow:0 12px 36px #18302430}
+#ca.modo-dia .achievement-toast-title{color:#285d36}
+#ca.modo-dia .achievement-toast-description{color:#475569}
+#ca.modo-dia .achievement-toast-close:hover{background:#18302412}
+#ca.modo-dia #dashboard .welcome-banner,#ca.modo-dia #dashboard .dashboard-tabs{background:#fff;border-color:#d6e0d4;color:#1a1a1a}
+#ca.modo-dia #dashboard .welcome-banner strong{color:#285d36}
+#ca.modo-dia #dashboard .dashboard-tab{color:#475569}
+#ca.modo-dia #dashboard .dashboard-tab[aria-selected="true"]{background:#e8efe5;border-color:#87ad7b;color:#183024}
+#ca.modo-dia #dashboard .game-badge{background:#fff;border-color:#d6e0d4;color:#1a1a1a}
+#ca.modo-dia #dashboard .game-badge.is-unlocked{background-color:#eef7f2;background-image:none;border-color:#4a7c59}
+#ca.modo-dia #dashboard .game-badge-status{color:#58685d}
+#ca.modo-dia #dashboard .profile-progress{background:#dce5d8}
+@media(max-width:900px){#ca .landing-header{align-items:flex-start;flex-direction:column;gap:13px;padding:15px 20px}#ca .landing-controls{width:100%;justify-content:flex-end;padding-bottom:3px}}
+@media(max-width:850px){#ca .hero,#ca .two,#ca .logbook-grid{grid-template-columns:1fr}#ca .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#ca .logbook-panel{min-height:330px}}
+@media(max-width:560px){#ca .landing-header{padding:13px 15px}#ca .landing-controls{gap:12px}#ca .landing-hero{padding:150px 20px 82px;background-position:58% center}#ca .landing-title{letter-spacing:-2px}}
+@media(max-width:480px){#ca .panel{padding:12px}#ca .options{grid-template-columns:1fr}#ca .temp{font-size:52px}}
+</style>
+
+<div id="ca">
+  <section id="auth-screen">
+    <section class="landing-hero" id="landing-home" aria-labelledby="landing-title">
+      <div class="landing-slides" aria-hidden="true">
+        <div class="landing-slide is-active"></div>
+        <div class="landing-slide"></div>
+      </div>
+      <header class="landing-header">
+        <a class="landing-brand" href="#landing-home" aria-label="ClimaAlerta Perú, inicio">
+          <span class="landing-mark" aria-hidden="true">🌡️</span>
+          <span><strong>ClimaAlerta Perú</strong><small>Inteligencia climática</small></span>
+        </a>
+        <div class="landing-controls">
+          <label class="language-select"><span class="sr-only" data-i18n="language">Idioma</span><select id="language-select" aria-label="Idioma" data-i18n-aria-label="language"><option value="es">ES</option><option value="en">EN</option></select></label>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema" aria-pressed="false">
+            <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+            <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.7 8.7 0 1 0 20.2 15.1Z"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="landing-copy">
+        <div class="landing-kicker" data-i18n="landingKicker">Monitoreo para un Perú resiliente</div>
+        <h1 class="landing-title" id="landing-title">ClimaAlerta <span>Perú</span></h1>
+        <div class="landing-actions">
+          <button class="landing-primary" id="open-login" type="button" data-i18n="landingLogin">Ingresar al sistema →</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="login-modal hidden" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+      <button class="login-modal-close" id="close-login" type="button" aria-label="Cerrar formulario de acceso" data-i18n="close" data-i18n-aria-label="closeDialog">Cerrar</button>
+      <div class="panel auth-card">
+        <div class="eyebrow" data-i18n="accessHeading">ACCESO A LA PLATAFORMA</div>
+        <div class="auth-tabs">
+          <button id="tab-login" class="primary" data-i18n="loginTab">Iniciar sesión</button>
+          <button id="tab-register" class="secondary" data-i18n="registerTab">Crear cuenta</button>
+        </div>
+
+        <form id="login-form">
+          <h2 id="login-modal-title" data-i18n="welcome">Bienvenido de nuevo</h2>
+          <div class="muted" data-i18n="loginDescription">Ingresa tus credenciales para acceder al panel.</div>
+          <label for="login-username" data-i18n="username">Usuario</label>
+          <input id="login-username" type="text" autocomplete="username" placeholder="Ingresa tu usuario" data-i18n-placeholder="usernamePlaceholder">
+          <label for="login-email" data-i18n="email">Correo electrónico</label>
+          <input id="login-email" type="email" autocomplete="email" placeholder="usuario@correo.com" data-i18n-placeholder="emailPlaceholder">
+          <label for="login-password" data-i18n="password">Contraseña</label>
+          <input id="login-password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" data-i18n-placeholder="passwordPlaceholder" required>
+          <button class="primary" type="submit" style="width:100%" data-i18n="submitLogin">Ingresar al sistema</button>
+          <div class="muted"><span data-i18n="demoCredentials">Acceso de prueba:</span> <strong>admin@test.com</strong> / <strong>123456</strong>. <span data-i18n="demoDisclaimer">Solo para demostración local; no usar en producción.</span></div>
+          <div class="auth-msg" id="login-msg" role="status"></div>
+          <div class="muted"><span data-i18n="noAccount">¿No tienes una cuenta?</span> <button class="linkbtn" id="go-register" type="button" data-i18n="registerHere">Regístrate aquí</button></div>
+        </form>
+
+        <form id="register-form" class="hidden">
+          <h2 data-i18n="registerHeading">Crear una cuenta</h2>
+          <div class="muted" data-i18n="registerDescription">Completa los datos para crear tu perfil local.</div>
+          <label for="register-name"><span data-i18n="usernameLabel">Usuario</span><small class="field-hint" data-i18n="usernameHint">(así te llamaremos en la plataforma)</small></label>
+          <input id="register-name" type="text" autocomplete="username" maxlength="30" pattern="[A-Za-z0-9._\-]{3,30}" placeholder="Ingresa tu usuario" data-i18n-placeholder="usernamePlaceholder" required>
+          <label for="register-email" data-i18n="email">Correo electrónico</label>
+          <input id="register-email" type="email" autocomplete="email" maxlength="120" placeholder="usuario@correo.com" data-i18n-placeholder="emailPlaceholder" required>
+          <label for="register-password" data-i18n="registerPassword">Contraseña (mínimo 8 caracteres)</label>
+          <input id="register-password" type="password" autocomplete="new-password" minlength="8" placeholder="Crea una contraseña" data-i18n-placeholder="createPasswordPlaceholder" required>
+          <label for="register-confirm" data-i18n="confirmPassword">Confirmar contraseña</label>
+          <input id="register-confirm" type="password" autocomplete="new-password" minlength="8" placeholder="Repite la contraseña" data-i18n-placeholder="repeatPasswordPlaceholder" required>
+          <label class="check"><input id="terms" type="checkbox" required> <span data-i18n="terms">Acepto usar este prototipo académico y comprendo que los datos se guardan en este navegador.</span></label>
+          <button class="primary" type="submit" style="width:100%;margin-top:13px" data-i18n="createAccount">Crear mi cuenta</button>
+          <div class="auth-msg" id="register-msg" role="status"></div>
+          <div class="muted"><span data-i18n="hasAccount">¿Ya tienes cuenta?</span> <button class="linkbtn" id="go-login" type="button" data-i18n="loginHere">Inicia sesión</button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="top">
+      <div class="brand" style="margin:0">
+        <div class="logo">🌡️</div>
+        <div>        <div class="eyebrow" data-i18n="monitoringPanel">PANEL DE MONITOREO</div><h1>ClimaAlerta Perú PRO</h1><div class="muted"><span data-i18n="sessionOf">Sesión de</span> <strong id="user-name">Usuario</strong></div></div>
+      </div>
+      <label class="language-select dashboard-language"><span class="sr-only" data-i18n="language">Idioma</span><select id="language-select-dashboard" aria-label="Idioma" data-i18n-aria-label="language"><option value="es">ES</option><option value="en">EN</option></select></label>
+      <button id="theme-toggle-dashboard" class="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema" aria-pressed="false">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.7 8.7 0 1 0 20.2 15.1Z"/></svg>
+      </button>
+      <button id="logout" class="danger" data-i18n="logout">Cerrar sesión</button>
+    </div>
+
+    <div class="welcome-banner" role="status"><span>👋 </span><span data-i18n="welcomeUserPrefix">¡Bienvenido, </span><strong id="welcome-user">Usuario</strong><span data-i18n="welcomeUserSuffix">! ¿Qué te gustaría consultar hoy?</span></div>
+    <nav class="dashboard-tabs" role="tablist" aria-label="Navegación del panel" data-i18n-aria-label="tabNavigation">
+      <button class="dashboard-tab" id="nav-monitoring" type="button" role="tab" aria-controls="view-monitoring" aria-selected="true" data-view="view-monitoring" data-i18n="tabMonitoring">🗺️ Monitoreo</button>
+      <button class="dashboard-tab" id="nav-rules" type="button" role="tab" aria-controls="view-rules" aria-selected="false" data-view="view-rules" data-i18n="tabRules">⚙️ Reglas</button>
+      <button class="dashboard-tab" id="nav-alerts" type="button" role="tab" aria-controls="view-alerts" aria-selected="false" data-view="view-alerts" data-i18n="tabAlerts">🚨 Alertas</button>
+      <button class="dashboard-tab" id="nav-history" type="button" role="tab" aria-controls="view-history" aria-selected="false" data-view="view-history" data-i18n="tabHistory">📜 Bitácora</button>
+      <button class="dashboard-tab" id="nav-profile" type="button" role="tab" aria-controls="view-profile" aria-selected="false" data-view="view-profile" data-i18n="tabProfile">👤 Mi Perfil</button>
+    </nav>
+
+    <div id="view-monitoring" class="dashboard-view" role="tabpanel" aria-labelledby="nav-monitoring">
+    <section class="hero">
+      <div>
+        <div class="eyebrow" data-i18n="operationsCenter">CENTRO DE OPERACIONES</div>
+        <h2 id="forecast-location" data-i18n="forecastTitle">Detecta el riesgo antes de que escale.</h2>
+        <p class="muted" data-i18n="forecastDescription">Consulta el pronóstico, identifica temperaturas elevadas y activa medidas preventivas.</p>
+        <div class="search">
+          <input id="district" list="peru-departments" placeholder="Distrito o ciudad del Perú" data-i18n-placeholder="districtPlaceholder">
+          <datalist id="peru-departments">
+            <option value="Amazonas"><option value="Ancash"><option value="Apurímac"><option value="Arequipa"><option value="Ayacucho">
+            <option value="Cajamarca"><option value="Callao"><option value="Cusco"><option value="Huancavelica"><option value="Huánuco">
+            <option value="Ica"><option value="Junín"><option value="La Libertad"><option value="Lambayeque"><option value="Lima">
+            <option value="Loreto"><option value="Madre de Dios"><option value="Moquegua"><option value="Pasco"><option value="Piura">
+            <option value="Puno"><option value="San Martín"><option value="Tacna"><option value="Tumbes"><option value="Ucayali">
+          </datalist>
+          <button id="search" class="primary" data-i18n="search">Consultar</button>
+          <button id="geolocate" class="secondary" data-i18n="myLocation">◎ Mi ubicación</button>
+        </div>
+        <div class="muted" id="message" style="margin-top:10px" data-i18n="waitingQuery">Esperando consulta…</div>
+        <div class="actions">
+          <button id="refresh" class="secondary" data-i18n="refresh">↻ Actualizar</button>
+          <button id="senamhi" class="secondary" data-i18n="senamhi">Consulta directa a SENAMHI ↗</button>
+        </div>
+      </div>
+      <div class="tempbox">
+        <div class="muted" id="location-name" data-i18n="waitingLocation">Esperando localidad</div>
+        <div class="temp" id="temp">--°</div>
+        <div id="risk" class="risk low" data-i18n="noData">SIN DATOS</div>
+        <div class="muted" id="condition" data-i18n="weatherUnavailable">Estado meteorológico no disponible</div>
+        <div class="muted" style="margin-top:8px"><span data-i18n="feelsLike">Sensación térmica:</span> <strong id="feels">--</strong></div>
+        <div class="muted"><span data-i18n="lastQuery">Última consulta:</span> <span id="updated">--</span></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel"><div data-i18n="maxForecast">🔥 Máxima prevista</div><div class="metric" id="max">-- °C</div><div class="muted" data-i18n="today">Hoy</div></div>
+      <div class="panel"><div data-i18n="relativeHumidity">💧 Humedad relativa</div><div class="metric" id="humidity">-- %</div><div class="muted" data-i18n="percentage">Porcentaje</div></div>
+      <div class="panel"><div data-i18n="windSpeed">🌬️ Velocidad del viento</div><div class="metric" id="wind">-- km/h</div><div class="muted" data-i18n="kilometersPerHour">Kilómetros por hora</div></div>
+      <div class="panel"><div data-i18n="preventiveIndex">🛡️ Índice preventivo</div><div class="metric" id="score">--/100</div><div class="muted" data-i18n="experimentalIndicator">Indicador experimental</div></div>
+    </section>
+
+    <section class="two">
+      <div class="panel">
+        <div class="head"><h2 data-i18n="interactiveMap">🗺️ Mapa meteorológico interactivo</h2><button id="map-refresh" class="secondary" data-i18n="refreshMap">Actualizar mapa</button></div>
+        <div class="map-stage">
+          <div id="map" class="map"></div>
+          <label class="map-layers" for="map-layer"><span data-i18n="mapLayers">Capas del mapa</span>
+            <select id="map-layer" aria-label="Capas del mapa" data-i18n-aria-label="mapLayers">
+              <option value="temperature" data-i18n="heatMap">Mapa de calor (Temperatura °C)</option>
+              <option value="uv" data-i18n="solarRadiation">Radiación Solar (Índice UV)</option>
+              <option value="clouds" data-i18n="cloudCover">Cobertura de Nubes y Lluvias</option>
+            </select>
+          </label>
+          <div id="map-legend" class="map-legend" aria-live="polite"></div>
+        </div>
+        <div class="muted" style="margin-top:10px" data-i18n="mapDisclaimer">Los puntos representan localidades de referencia; no miden la temperatura exacta de cada calle.</div>
+      </div>
+      <div class="panel">
+        <h2 data-i18n="hourlyForecast">📈 Pronóstico por horas</h2>
+        <div id="hourly" class="hours"><div class="muted" data-i18n="queryLocation">Consulta una localidad.</div></div>
+        <h2 style="margin-top:20px" data-i18n="upcomingDays">Próximos días</h2>
+        <div id="daily"></div>
+      </div>
+    </section>
+
+    </div>
+    <div id="view-rules" class="dashboard-view" role="tabpanel" aria-labelledby="nav-rules" hidden>
+    <section class="two">
+      <div class="panel">
+        <h2 data-i18n="preventiveRules">⚙️ Motor de reglas preventivas</h2>
+        <div class="muted" style="margin:-6px 0 12px;color:#8a99ad" data-i18n="thresholdDescription">Ingrese los umbrales de temperatura (°C) deseados para activar las alertas preventivas según las condiciones de su zona.</div>
+        <div class="two">
+          <label class="muted"><span data-i18n="mediumLevel">Nivel medio desde (°C)</span><input id="medium-threshold" type="number" placeholder="Ej: 26" data-i18n-placeholder="example26" min="15" max="45"></label>
+          <label class="muted"><span data-i18n="highLevel">Nivel alto desde (°C)</span><input id="high-threshold" type="number" placeholder="Ej: 32" data-i18n-placeholder="example32" min="16" max="50"></label>
+        </div>
+        <button id="apply-rules" class="primary" data-i18n="applyThresholds">Aplicar umbrales</button>
+        <div id="rules-result" class="notice hidden"></div>
+        <h2 style="margin-top:18px" data-i18n="vulnerableGroups">Grupos vulnerables</h2>
+        <div class="options">
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="18" data-profile="group" data-key="children" data-label="Niños y bebés"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20c.7-3.7 2.9-5.6 6.5-5.6s5.8 1.9 6.5 5.6M8 14.5l-1 5m9-5 1 5"/></svg><span data-i18n="childrenBabies">Niños y Bebés</span></label>
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="20" data-profile="group" data-key="older-adults" data-label="Adultos mayores"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="5" r="2.7"/><path d="m9 8 2 5 4 2m-6-7-3 5 3 2-1 5m3-7-1 7m7-6v6m-2-6h2"/></svg><span data-i18n="olderAdults">Adultos Mayores</span></label>
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="15" data-profile="group" data-key="pets" data-label="Mascotas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9 5.5 5.5 9 7m8 2 1.5-3.5L15 7M6.5 10.5c0-2 2.4-3.5 5.5-3.5s5.5 1.5 5.5 3.5v4.2c0 2.5-2.2 4.3-5.5 4.3s-5.5-1.8-5.5-4.3zM9 12h.01M15 12h.01m-4.5 2.5c1 .8 2 .8 3 0"/></svg><span data-i18n="pets">Mascotas</span></label>
+        </div>
+        <h2 style="margin-top:18px" data-i18n="riskFactors">Condicionantes y factores de riesgo</h2>
+        <div class="options">
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="17" data-profile="factor" data-key="outdoor" data-label="Trabajo al aire libre / Exposición prolongada"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="17" cy="6" r="2.5"/><path d="M17 1.5v1m0 7v1m4.5-4.5h-1m-7 0h-1M6 20l2-5 3-2 2 2 3 1 1 4m-9-5 2 5m-2-7-3 2m10-2 2 2"/></svg><span data-i18n="outdoorExposure">Trabajo al aire libre / Exposición prolongada</span></label>
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="17" data-profile="factor" data-key="limited-water-shade" data-label="Acceso limitado a agua o sombra"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11a5 5 0 0 1 10 0M4 11h16M12 11v8m-4 0h8M18.5 3.5c1.7 2 2.5 3.1 2.5 4.3a2.5 2.5 0 0 1-5 0c0-1.2.8-2.3 2.5-4.3Z"/></svg><span data-i18n="limitedWaterShade">Acceso limitado a agua o sombra</span></label>
+          <label class="profile-chip"><input class="vuln" type="checkbox" value="20" data-profile="factor" data-key="health" data-label="Afecciones de salud (respiratorias / cardíacas)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.5-4.4-7.5-10a4 4 0 0 1 7.5-1.8A4 4 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10Z"/><path d="M6.5 12h3l1.5-2.5 2.2 5 1.4-2.5h3"/></svg><span data-i18n="healthConditions">Afecciones de salud (Respiratorias / Cardíacas)</span></label>
+        </div>
+        <div class="vuln-meter">
+          <div class="vuln-meter-head"><strong data-i18n="selectedExposure">Perfil de exposición seleccionado</strong><strong id="vuln-percent">0%</strong></div>
+          <div class="vuln-track" role="progressbar" aria-label="Porcentaje de grupos y factores de riesgo seleccionados" data-i18n-aria-label="riskProgress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="vuln-progress"><div id="vuln-fill" class="vuln-fill"></div></div>
+          <div id="vuln-status" class="vuln-status" data-i18n="noRiskSelected">Sin grupos ni factores seleccionados</div>
+        </div>
+        <button id="evaluate" class="primary" style="margin-top:12px" data-i18n="calculatePriority">Calcular prioridad</button>
+        <div id="vulnerability" class="notice" data-i18n="selectGroups">Selecciona los grupos para evaluar la prioridad preventiva.</div>
+      </div>
+    </section>
+    </div>
+    <div id="view-alerts" class="dashboard-view" role="tabpanel" aria-labelledby="nav-alerts" hidden>
+    <section>
+      <div class="panel">
+        <h2 data-i18n="sirenConsole">🚨 Consola de alarma sonora</h2>
+        <div id="alarm-light" class="alarm-light"></div>
+        <div class="metric" id="alarm-heading" data-i18n="systemReady">Sistema listo</div>
+        <div class="muted" id="alarm-description" data-i18n="monitoringDescription">Activa el monitoreo para revisar los umbrales durante esta sesión.</div>
+        <div class="actions">
+          <button id="monitor" class="primary" data-i18n="activateMonitoring">Activar monitoreo</button>
+          <button id="test-siren" class="danger" data-i18n="testSiren">Probar sirena</button>
+          <button id="stop-siren" class="secondary" data-i18n="stopSound">Detener Alarma</button>
+        </div>
+        <label class="check auto-sound-setting" style="margin-top:12px"><input id="auto-sound" type="checkbox" checked> <span data-i18n="autoSiren">Permitir sirena automática desde 30 °C</span></label>
+        <div class="notice" data-i18n="sirenDisclaimer">La sirena se activa desde 30 °C (incluido) y requiere habilitar audio desde Consultar o Mi ubicación. El sonido depende del volumen del dispositivo y no sustituye alertas oficiales ni servicios de emergencia.</div>
+        <div class="head" style="margin-top:18px"><h2 data-i18n="preventionPlan">🧭 Plan inteligente de prevención</h2></div>
+        <div class="muted" data-i18n="recommendationDescription">Acciones generadas a partir del pronóstico, los umbrales configurados y los grupos seleccionados.</div>
+        <div id="recommendation-summary" class="notice" data-i18n="recommendationEmpty">Consulta una localidad para generar un plan preventivo personalizado.</div>
+        <div id="recommendations">
+          <div class="advice" data-i18n="adviceWater">💧 Mantén agua disponible y busca sombra en periodos de calor.</div>
+          <div class="advice" data-i18n="adviceUv">☀️ Revisa la radiación UV y limita la exposición solar.</div>
+          <div class="advice" data-i18n="adviceVulnerable">🧑‍🤝‍🧑 Considera las necesidades de las personas vulnerables.</div>
+        </div>
+        <div class="emergency-box">
+          <div class="emergency-heading"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"/><path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg><strong data-i18n="medicalAttention">Atención médica inmediata</strong></div>
+          <p data-i18n="emergencyDescription">Si los síntomas de estrés térmico persisten, empeoran o se presentan signos de desorientación, desmayo o convulsiones, suspenda la actividad y comuníquese de inmediato con las líneas de atención médica:</p>
+          <ul class="emergency-lines">
+            <li><span data-i18n="samu">SAMU (Atención Médica)</span><a href="tel:106">106</a></li>
+            <li><span>EsSalud</span><a href="tel:107">107</a></li>
+            <li><span data-i18n="firefighters">Bomberos</span><a href="tel:116">116</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    </div>
+    <div id="view-history" class="dashboard-view" role="tabpanel" aria-labelledby="nav-history" hidden>
+    <section class="logbook-grid">
+      <div class="panel history-panel logbook-panel">
+        <div class="head"><h2 data-i18n="queryHistory">📚 Historial de consultas</h2></div>
+        <div class="tablewrap"><table><thead><tr><th data-i18n="date">Fecha</th><th data-i18n="locality">Localidad</th><th data-i18n="current">Actual</th><th data-i18n="maximum">Máxima</th><th data-i18n="risk">Riesgo</th><th data-i18n="report">Reporte</th></tr></thead><tbody id="history"></tbody></table></div>
+        <div class="actions"><button id="clear-history" class="secondary" data-i18n="clearHistory">Limpiar historial</button></div>
+      </div>
+      <div class="panel logbook-panel">
+        <div class="head"><h2 data-i18n="eventLog">🧾 Registro de eventos</h2></div>
+        <div id="events" class="log"></div>
+        <div class="actions"><button id="clear-events" class="secondary" data-i18n="clearEvents">Limpiar eventos</button></div>
+      </div>
+    </section>
+    <div class="notice"><strong data-i18n="scope">Alcance:</strong> <span data-i18n="scopeDescription">datos meteorológicos de Open-Meteo y mapa de OpenStreetMap. Los umbrales y la puntuación son demostrativos, no diagnósticos médicos ni alertas oficiales del SENAMHI. Si hay confusión, desmayo o deterioro grave por calor, busca atención de emergencia.</span></div>
+    <section class="consolidated-report" aria-labelledby="consolidated-report-title">
+      <h2 id="consolidated-report-title" data-i18n="consolidatedReport">Reporte Técnico Consolidado</h2>
+      <p data-i18n="reportDescription">Descargue el informe oficial en formato PDF que integra las métricas climáticas vigentes, los protocolos aplicados a grupos vulnerables y condicionantes de entorno, junto con la bitácora de eventos del sistema para fines de gestión, archivo o coordinación preventiva.</p>
+      <button id="export-plan-pdf" class="primary pdf-button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg><span data-i18n="downloadReport">Descargar Reporte PDF</span></button>
+    </section>
+    </div>
+    <div id="view-profile" class="dashboard-view" role="tabpanel" aria-labelledby="nav-profile" hidden>
+      <section class="panel">
+        <div class="profile-level">
+          <div>
+            <div class="eyebrow" data-i18n="profileProgressEyebrow">TU PROGRESO</div>
+            <h2 id="profile-level-title">🕶️ Explorador del Calor</h2>
+            <div id="profile-streak-description" class="muted"></div>
+            <div class="profile-progress" role="progressbar" aria-valuemin="0" aria-valuemax="7" aria-valuenow="0" id="profile-progress"><div class="profile-progress-fill" id="profile-progress-fill"></div></div>
+            <div class="muted" id="profile-next-level"></div>
+            <div class="muted" id="profile-save-status" role="status"></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel">
+        <h2 data-i18n="badgeCollection">🏅 Colección de chapas y medallas</h2>
+        <div class="muted" data-i18n="badgeCollectionDescription">Desbloquea insignias al explorar y utilizar las herramientas de ClimaAlerta.</div>
+        <div id="badge-grid" class="badge-grid"></div>
+      </section>
+    </div>
+  </section>
+  <div id="heat-alert-modal" class="heat-alert-modal" role="dialog" aria-modal="true" aria-labelledby="heat-alert-title" aria-describedby="heat-alert-message" hidden>
+    <div class="heat-alert-card">
+      <button id="heat-alert-close" class="heat-alert-close" type="button" aria-label="Cerrar alerta" title="Cerrar alerta" data-i18n-aria-label="closeHeatAlert" data-i18n-title="closeHeatAlert">×</button>
+      <h2 id="heat-alert-title" data-i18n="highHeatAlert">ALERTA TÉRMICA ALTA</h2>
+      <p id="heat-alert-message" class="heat-alert-message"></p>
+      <button id="heat-alert-stop" class="heat-alert-stop" type="button" data-i18n="stopSound">Detener Alarma</button>
+    </div>
+  </div>
+  <div id="achievement-toast" class="achievement-toast" role="status" aria-live="polite" aria-atomic="true" tabindex="0" hidden>
+    <span class="achievement-toast-icon" id="achievement-toast-icon" aria-hidden="true"></span>
+    <span><strong class="achievement-toast-title" id="achievement-toast-title"></strong><span class="achievement-toast-description" id="achievement-toast-description"></span></span>
+    <button id="achievement-toast-close" class="achievement-toast-close" type="button" aria-label="Cerrar notificación" data-i18n-aria-label="closeNotification">×</button>
+  </div>
+  <div class="footer"><span>ClimaAlerta Perú PRO</span> · <span data-i18n="academicPrototype">Prototipo académico</span> · <span data-i18n="systemsEngineering">Ingeniería de Sistemas</span></div>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const app=$("ca");
+const loginModal=$("login-modal");
+let loginTrigger=null;
+function setLandingLock(locked){
+  document.documentElement.classList.toggle("landing-fixed",locked);
+  document.body.classList.toggle("landing-fixed",locked);
+}
+function openLoginModal(){
+  loginTrigger=document.activeElement;
+  loginModal.classList.remove("hidden");
+  $("login-form").classList.contains("hidden")?$("register-name").focus():$("login-username").focus();
+}
+function closeLoginModal(){
+  loginModal.classList.add("hidden");
+  if(loginTrigger&&typeof loginTrigger.focus==="function")loginTrigger.focus();
+}
+$("open-login").addEventListener("click",openLoginModal);
+$("close-login").addEventListener("click",closeLoginModal);
+loginModal.addEventListener("click",event=>{
+  if(event.target===loginModal)closeLoginModal();
+});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&!loginModal.classList.contains("hidden"))closeLoginModal();
+});
+const traducciones={
+  es:{
+    language:"Idioma",close:"Cerrar",closeDialog:"Cerrar formulario de acceso",
+    landingKicker:"Monitoreo para un Perú resiliente",landingLogin:"Ingresar al sistema →",
+    accessHeading:"ACCESO A LA PLATAFORMA",loginTab:"Iniciar sesión",registerTab:"Crear cuenta",
+    welcome:"Bienvenido de nuevo",loginDescription:"Ingresa tus credenciales para acceder al panel.",
+    welcomeUserPrefix:"¡Bienvenido, ",welcomeUserSuffix:"! ¿Qué te gustaría consultar hoy?",
+    tabNavigation:"Navegación del panel",tabMonitoring:"🗺️ Monitoreo",tabRules:"⚙️ Reglas",
+    tabAlerts:"🚨 Alertas",tabHistory:"📜 Bitácora",tabProfile:"👤 Mi Perfil",
+    profileProgressEyebrow:"TU PROGRESO",explorerLevel:"🕶️ Explorador del Calor",guardianLevel:"🛡️ Guardián Climático",
+    streakDescription:"Racha activa: {days} días",nextLevelProgress:"Meta del siguiente nivel: {current} de {goal} días",
+    days:"días",day:"día",streakDescriptionOne:"Racha activa: 1 día",profileSaveError:"No se pudo guardar el progreso en este navegador.",badgeCollection:"🏅 Colección de chapas y medallas",
+    badgeCollectionDescription:"Desbloquea insignias al explorar y utilizar las herramientas de ClimaAlerta.",
+    badgeShade:"Mantenido a Sombra",badgeShadeDescription:"Leíste consejos de prevención.",
+    badgeDetective:"Detective del Tiempo",badgeDetectiveDescription:"Buscaste 3 ciudades distintas.",
+    badgeOperator:"Operador de Riesgo",badgeOperatorDescription:"Aplicaste el motor de reglas.",
+    badgeProtector:"Protector Vulnerable",badgeProtectorDescription:"Marcaste grupos vulnerables.",
+    badgeSiren:"Probador de Alarma",badgeSirenDescription:"Probaste la sirena.",
+    badgeAnalyst:"Técnico Analista",badgeAnalystDescription:"Descargaste un reporte PDF.",
+    badgeEagle:"Ojo de Águila",badgeEagleDescription:"Exploraste el pie de página.",
+    badgeNightWatch:"Guardia Nocturno",badgeNightWatchDescription:"Cambiaste al Modo Noche.",
+    badgeTranslator:"Traductor Climático",badgeTranslatorDescription:"Cambiaste el idioma de la plataforma.",
+    badgeFaithfulGuardian:"Fiel Guardián",badgeFaithfulGuardianDescription:"Mantuviste una racha de al menos 3 días consecutivos.",
+    achievementUnlocked:"¡Logro desbloqueado!",closeNotification:"Cerrar notificación",
+    achievementToastAction:"Logro {name} desbloqueado. Haz clic para abrir Mi Perfil.",
+    badgeUnlocked:"Insignia desbloqueada",badgeLocked:"🔒 Pendiente",
+    email:"Correo electrónico",emailPlaceholder:"usuario@correo.com",username:"Usuario",
+    usernamePlaceholder:"Ingresa tu usuario",
+    loginIdentifierRequired:"Ingresa tu usuario o tu correo electrónico.",
+    usernameInvalid:"Usa de 3 a 30 caracteres: letras, números, punto, guion o guion bajo.",
+    usernameTaken:"Ese nombre de usuario ya está en uso.",accountCreated:"Cuenta creada. Ahora inicia sesión con tu usuario o correo y contraseña.",
+    loginInvalid:"Usuario, correo o contraseña incorrectos.",password:"Contraseña",
+    passwordPlaceholder:"Ingresa tu contraseña",submitLogin:"Ingresar al sistema",
+    demoCredentials:"Acceso de prueba:",demoDisclaimer:"Solo para demostración local; no usar en producción.",
+    noAccount:"¿No tienes una cuenta?",registerHere:"Regístrate aquí",registerHeading:"Crear una cuenta",
+    registerDescription:"Completa los datos para crear tu perfil local.",usernameLabel:"Usuario",
+    usernameHint:"(así te llamaremos en la plataforma)",registerPassword:"Contraseña (mínimo 8 caracteres)",
+    createPasswordPlaceholder:"Crea una contraseña",confirmPassword:"Confirmar contraseña",
+    repeatPasswordPlaceholder:"Repite la contraseña",
+    terms:"Acepto usar este prototipo académico y comprendo que los datos se guardan en este navegador.",
+    createAccount:"Crear mi cuenta",hasAccount:"¿Ya tienes cuenta?",loginHere:"Inicia sesión",
+    logout:"Cerrar sesión",monitoringPanel:"PANEL DE MONITOREO",sessionOf:"Sesión de",demoUserName:"Administrador de prueba",
+    operationsCenter:"CENTRO DE OPERACIONES",forecastTitle:"Detecta el riesgo antes de que escale.",
+    forecastDescription:"Consulta el pronóstico, identifica temperaturas elevadas y activa medidas preventivas.",
+    districtPlaceholder:"Distrito o ciudad del Perú",search:"Consultar",myLocation:"◎ Mi ubicación",
+    waitingQuery:"Esperando consulta…",refresh:"↻ Actualizar",senamhi:"Consulta directa a SENAMHI ↗",
+    waitingLocation:"Esperando localidad",noData:"SIN DATOS",weatherUnavailable:"Estado meteorológico no disponible",
+    feelsLike:"Sensación térmica:",lastQuery:"Última consulta:",maxForecast:"🔥 Máxima prevista",
+    today:"Hoy",relativeHumidity:"💧 Humedad relativa",percentage:"Porcentaje",windSpeed:"🌬️ Velocidad del viento",
+    kilometersPerHour:"Kilómetros por hora",preventiveIndex:"🛡️ Índice preventivo",experimentalIndicator:"Indicador experimental",
+    interactiveMap:"🗺️ Mapa meteorológico interactivo",refreshMap:"Actualizar mapa",mapLayers:"Capas del mapa",
+    heatMap:"Mapa de calor (Temperatura °C)",solarRadiation:"Radiación Solar (Índice UV)",
+    cloudCover:"Cobertura de Nubes y Lluvias",
+    mapDisclaimer:"Los puntos representan localidades de referencia; no miden la temperatura exacta de cada calle.",
+    hourlyForecast:"📈 Pronóstico por horas",queryLocation:"Consulta una localidad.",upcomingDays:"Próximos días",
+    preventiveRules:"⚙️ Motor de reglas preventivas",
+    thresholdDescription:"Ingrese los umbrales de temperatura (°C) deseados para activar las alertas preventivas según las condiciones de su zona.",
+    mediumLevel:"Nivel medio desde (°C)",highLevel:"Nivel alto desde (°C)",example26:"Ej: 26",example32:"Ej: 32",
+    applyThresholds:"Aplicar umbrales",vulnerableGroups:"Grupos vulnerables",childrenBabies:"Niños y Bebés",
+    olderAdults:"Adultos Mayores",pets:"Mascotas",riskFactors:"Condicionantes y factores de riesgo",
+    outdoorExposure:"Trabajo al aire libre / Exposición prolongada",limitedWaterShade:"Acceso limitado a agua o sombra",
+    healthConditions:"Afecciones de salud (Respiratorias / Cardíacas)",
+    selectedExposure:"Perfil de exposición seleccionado",riskProgress:"Porcentaje de grupos y factores de riesgo seleccionados",
+    noRiskSelected:"Sin grupos ni factores seleccionados",calculatePriority:"Calcular prioridad",
+    selectGroups:"Selecciona los grupos para evaluar la prioridad preventiva.",sirenConsole:"🚨 Consola de alarma sonora",
+    systemReady:"Sistema listo",monitoringDescription:"Activa el monitoreo para revisar los umbrales durante esta sesión.",
+    activateMonitoring:"Activar monitoreo",testSiren:"Probar sirena",stopSound:"Detener Alarma",
+    closeHeatAlert:"Cerrar alerta",
+    autoSiren:"Permitir sirena automática desde 30 °C",
+    sirenDisclaimer:"La sirena se activa desde 30 °C (incluido) y requiere habilitar audio desde Consultar o Mi ubicación. El sonido depende del volumen del dispositivo y no sustituye alertas oficiales ni servicios de emergencia.",
+    preventionPlan:"🧭 Plan inteligente de prevención",
+    recommendationDescription:"Acciones generadas a partir del pronóstico, los umbrales configurados y los grupos seleccionados.",
+    recommendationEmpty:"Consulta una localidad para generar un plan preventivo personalizado.",
+    adviceWater:"💧 Mantén agua disponible y busca sombra en periodos de calor.",
+    adviceUv:"☀️ Revisa la radiación UV y limita la exposición solar.",
+    adviceVulnerable:"🧑‍🤝‍🧑 Considera las necesidades de las personas vulnerables.",
+    medicalAttention:"Atención médica inmediata",
+    emergencyDescription:"Si los síntomas de estrés térmico persisten, empeoran o se presentan signos de desorientación, desmayo o convulsiones, suspenda la actividad y comuníquese de inmediato con las líneas de atención médica:",
+    samu:"SAMU (Atención Médica)",firefighters:"Bomberos",eventLog:"🧾 Registro de eventos",
+    clearEvents:"Limpiar eventos",queryHistory:"📚 Historial de consultas",date:"Fecha",locality:"Localidad",
+    current:"Actual",maximum:"Máxima",risk:"Riesgo",report:"Reporte",clearHistory:"Limpiar historial",
+    scope:"Alcance:",scopeDescription:"datos meteorológicos de Open-Meteo y mapa de OpenStreetMap. Los umbrales y la puntuación son demostrativos, no diagnósticos médicos ni alertas oficiales del SENAMHI. Si hay confusión, desmayo o deterioro grave por calor, busca atención de emergencia.",
+    consolidatedReport:"Reporte Técnico Consolidado",
+    reportDescription:"Descargue el informe oficial en formato PDF que integra las métricas climáticas vigentes, los protocolos aplicados a grupos vulnerables y condicionantes de entorno, junto con la bitácora de eventos del sistema para fines de gestión, archivo o coordinación preventiva.",
+    downloadReport:"Descargar Reporte PDF",academicPrototype:"Prototipo académico",systemsEngineering:"Ingeniería de Sistemas",
+    riskHigh:"ALTO",riskMedium:"MEDIO",riskLow:"BAJO",riskPrefix:"RIESGO",
+    clearSky:"Despejado",partlyCloudy:"Parcialmente nublado",cloudy:"Nublado",fog:"Niebla",
+    drizzleRain:"Llovizna o lluvia",solidPrecipitation:"Precipitación sólida",storm:"Tormenta",variableConditions:"Condiciones variables",
+    noHourlyData:"Sin datos horarios.",forecastUnavailable:"Pronóstico por horas no disponible.",minimum:"Mín.",uv:"UV",noEvents:"No hay eventos.",noHistory:"Sin registros.",
+    thresholdLow:"Bajo",thresholdMedium:"Medio",thresholdHigh:"Alto",thresholdVeryHigh:"Muy alto",
+    moderate:"Moderado",heavyRain:"Lluvia fuerte",lightRain:"Lluvia ligera",clouds:"Nubes",rain:"Lluvia",
+    noDataValue:"Sin datos",temperature:"Temperatura",uvIndex:"Índice UV",cloudRain:"Nubes / lluvia",
+    notAvailable:"no disponible",groupUnit:"grupos",factorUnit:"factores",active:"activos",
+    selectedItems:"elementos seleccionados",priorityHigh:"alta",priorityMedium:"media",priorityUsual:"habitual",
+    preventivePriorityHigh:"Prioridad preventiva elevada",reinforcePrevention:"Reforzar prevención",
+    usualPrevention:"Prevención habitual",experimentalScore:"Puntuación experimental",
+    notValidatedMedicalIndex:"No es un índice médico validado.",searchingForecast:"Consultando pronóstico…",
+    noLocalityEntered:"Escribe una localidad.",updatedFromOpenMeteo:"Datos actualizados desde Open-Meteo.",
+    noLocalityFound:"No encontramos esa localidad en Perú.",writeLocation:"Consulta una localidad para generar un plan preventivo personalizado.",
+    recommendationPriority:"Prioridad",reason:"Motivo",priorityTag:"PRIORIDAD",searchHistory:"Historial de consultas",
+    activeMonitoring:"Monitoreo activo",monitoringActive:"Monitoreo preventivo activo",
+    monitoringActiveDescription:"No se alcanzó el umbral alto en esta consulta.",
+    highHeatAlert:"ALERTA TÉRMICA ALTA",
+    highHeatDescription:"La temperatura actual alcanzó o superó el umbral de riesgo de 30 °C.",
+    manualHeatAlertMessage:"Alerta por calor en {place}: Se registran {temperature} °C, superando el umbral de riesgo de 30 °C.",
+    locationHeatAlertMessage:"Alerta por calor en tu localidad actual ({place}): Se registran {temperature} °C en tu posición actual.",
+    heatCaution:"Precaución por temperatura elevada",
+    heatCautionDescription:"Refuerza la hidratación, busca sombra y revisa el pronóstico.",
+    automaticSirenAlert:"ALERTA TÉRMICA: SIRENA AUTOMÁTICA",sirenTestActive:"Prueba de sirena activa",
+    sirenContinues:"La sirena continuará hasta que pulses Detener Alarma.",sirenStopped:"Sirena detenida."
+  },
+  en:{
+    language:"Language",close:"Close",closeDialog:"Close sign-in form",
+    landingKicker:"Monitoring for a resilient Peru",landingLogin:"Enter the system →",
+    accessHeading:"PLATFORM ACCESS",loginTab:"Sign in",registerTab:"Create account",
+    welcome:"Welcome back",loginDescription:"Enter your credentials to access the dashboard.",
+    welcomeUserPrefix:"Welcome, ",welcomeUserSuffix:"! What would you like to check today?",
+    tabNavigation:"Dashboard navigation",tabMonitoring:"🗺️ Monitoring",tabRules:"⚙️ Rules",
+    tabAlerts:"🚨 Alerts",tabHistory:"📜 Logbook",tabProfile:"👤 My Profile",
+    profileProgressEyebrow:"YOUR PROGRESS",explorerLevel:"🕶️ Heat Explorer",guardianLevel:"🛡️ Climate Guardian",
+    streakDescription:"Current streak: {days} days",nextLevelProgress:"Next level goal: {current} of {goal} days",
+    days:"days",day:"day",streakDescriptionOne:"Current streak: 1 day",profileSaveError:"Progress could not be saved in this browser.",badgeCollection:"🏅 Badges and medals",
+    badgeCollectionDescription:"Unlock badges by exploring and using ClimaAlerta tools.",
+    badgeShade:"Shade Seeker",badgeShadeDescription:"Read prevention advice.",
+    badgeDetective:"Weather Detective",badgeDetectiveDescription:"Searched 3 different cities.",
+    badgeOperator:"Risk Operator",badgeOperatorDescription:"Applied the rules engine.",
+    badgeProtector:"Vulnerability Protector",badgeProtectorDescription:"Selected vulnerable groups.",
+    badgeSiren:"Alarm Tester",badgeSirenDescription:"Tested the siren.",
+    badgeAnalyst:"Technical Analyst",badgeAnalystDescription:"Downloaded a PDF report.",
+    badgeEagle:"Eagle Eye",badgeEagleDescription:"Explored the page footer.",
+    badgeNightWatch:"Night Watch",badgeNightWatchDescription:"Switched to Night Mode.",
+    badgeTranslator:"Climate Translator",badgeTranslatorDescription:"Changed the platform language.",
+    badgeFaithfulGuardian:"Faithful Guardian",badgeFaithfulGuardianDescription:"Maintained a streak of at least 3 consecutive days.",
+    achievementUnlocked:"Achievement unlocked!",closeNotification:"Close notification",
+    achievementToastAction:"Achievement {name} unlocked. Click to open My Profile.",
+    badgeUnlocked:"Badge unlocked",badgeLocked:"🔒 Locked",
+    email:"Email address",emailPlaceholder:"user@example.com",username:"Username",
+    usernamePlaceholder:"Enter your username",
+    loginIdentifierRequired:"Enter your username or email address.",
+    usernameInvalid:"Use 3 to 30 characters: letters, numbers, period, hyphen, or underscore.",
+    usernameTaken:"That username is already in use.",accountCreated:"Account created. Sign in with your username or email and password.",
+    loginInvalid:"Incorrect username, email, or password.",password:"Password",
+    passwordPlaceholder:"Enter your password",submitLogin:"Sign in",
+    demoCredentials:"Demo access:",demoDisclaimer:"For local demonstration only; do not use in production.",
+    noAccount:"Don't have an account?",registerHere:"Register here",registerHeading:"Create an account",
+    registerDescription:"Enter your details to create your local profile.",usernameLabel:"Username",
+    usernameHint:"(this is how we will call you on the platform)",registerPassword:"Password (at least 8 characters)",
+    createPasswordPlaceholder:"Create a password",confirmPassword:"Confirm password",
+    repeatPasswordPlaceholder:"Enter your password again",
+    terms:"I agree to use this academic prototype and understand that data is stored in this browser.",
+    createAccount:"Create my account",hasAccount:"Already have an account?",loginHere:"Sign in",
+    logout:"Sign out",monitoringPanel:"MONITORING DASHBOARD",sessionOf:"Session for",demoUserName:"Test administrator",
+    operationsCenter:"OPERATIONS CENTER",forecastTitle:"Spot the risk before it escalates.",
+    forecastDescription:"Check the forecast, identify high temperatures, and activate preventive measures.",
+    districtPlaceholder:"District or city in Peru",search:"Search",myLocation:"◎ My location",
+    waitingQuery:"Waiting for a query…",refresh:"↻ Refresh",senamhi:"Open SENAMHI ↗",
+    waitingLocation:"Waiting for location",noData:"NO DATA",weatherUnavailable:"Weather conditions unavailable",
+    feelsLike:"Feels like:",lastQuery:"Last query:",maxForecast:"🔥 Forecast high",
+    today:"Today",relativeHumidity:"💧 Relative humidity",percentage:"Percentage",windSpeed:"🌬️ Wind speed",
+    kilometersPerHour:"Kilometers per hour",preventiveIndex:"🛡️ Preventive index",experimentalIndicator:"Experimental indicator",
+    interactiveMap:"🗺️ Interactive weather map",refreshMap:"Refresh map",mapLayers:"Map layers",
+    heatMap:"Heat map (Temperature °C)",solarRadiation:"Solar radiation (UV index)",
+    cloudCover:"Cloud cover and rain",
+    mapDisclaimer:"Points represent reference locations; they do not measure the exact temperature on each street.",
+    hourlyForecast:"📈 Hourly forecast",queryLocation:"Search for a location.",upcomingDays:"Upcoming days",
+    preventiveRules:"⚙️ Preventive rules engine",
+    thresholdDescription:"Enter the desired temperature thresholds (°C) to activate preventive alerts based on conditions in your area.",
+    mediumLevel:"Medium level from (°C)",highLevel:"High level from (°C)",example26:"e.g. 26",example32:"e.g. 32",
+    applyThresholds:"Apply thresholds",vulnerableGroups:"Vulnerable groups",childrenBabies:"Children and babies",
+    olderAdults:"Older adults",pets:"Pets",riskFactors:"Risk conditions and factors",
+    outdoorExposure:"Outdoor work / prolonged exposure",limitedWaterShade:"Limited access to water or shade",
+    healthConditions:"Health conditions (respiratory / cardiac)",
+    selectedExposure:"Selected exposure profile",riskProgress:"Percentage of selected risk groups and factors",
+    noRiskSelected:"No groups or factors selected",calculatePriority:"Calculate priority",
+    selectGroups:"Select groups to assess preventive priority.",sirenConsole:"🚨 Siren console",
+    systemReady:"System ready",monitoringDescription:"Activate monitoring to check thresholds during this session.",
+    activateMonitoring:"Activate monitoring",testSiren:"Test siren",stopSound:"Stop alarm",
+    closeHeatAlert:"Close alert",
+    autoSiren:"Allow automatic siren from 30 °C",
+    sirenDisclaimer:"The siren activates at 30 °C or above and requires audio to be enabled from Search or My location. Sound depends on your device volume and does not replace official alerts or emergency services.",
+    preventionPlan:"🧭 Smart prevention plan",
+    recommendationDescription:"Actions generated from the forecast, configured thresholds, and selected groups.",
+    recommendationEmpty:"Search for a location to generate a personalized prevention plan.",
+    adviceWater:"💧 Keep water available and seek shade during hot periods.",
+    adviceUv:"☀️ Check UV radiation and limit sun exposure.",
+    adviceVulnerable:"🧑‍🤝‍🧑 Consider the needs of vulnerable people.",
+    medicalAttention:"Immediate medical attention",
+    emergencyDescription:"If heat-stress symptoms persist or worsen, or if disorientation, fainting, or seizures occur, stop the activity and immediately contact the medical services:",
+    samu:"SAMU (Medical care)",firefighters:"Fire department",eventLog:"🧾 Event log",
+    clearEvents:"Clear events",queryHistory:"📚 Search history",date:"Date",locality:"Location",
+    current:"Current",maximum:"High",risk:"Risk",report:"Report",clearHistory:"Clear history",
+    scope:"Scope:",scopeDescription:"Weather data from Open-Meteo and map from OpenStreetMap. Thresholds and scores are for demonstration only; they are not medical diagnoses or official SENAMHI alerts. If confusion, fainting, or severe heat-related deterioration occurs, seek emergency care.",
+    consolidatedReport:"Consolidated Technical Report",
+    reportDescription:"Download the official PDF report containing current climate metrics, protocols for vulnerable groups and environmental risk factors, and the system event log for management, archiving, or preventive coordination.",
+    downloadReport:"Download PDF report",academicPrototype:"Academic prototype",systemsEngineering:"Systems Engineering",
+    riskHigh:"HIGH",riskMedium:"MEDIUM",riskLow:"LOW",riskPrefix:"RISK",
+    clearSky:"Clear",partlyCloudy:"Partly cloudy",cloudy:"Cloudy",fog:"Fog",
+    drizzleRain:"Drizzle or rain",solidPrecipitation:"Solid precipitation",storm:"Thunderstorm",variableConditions:"Variable conditions",
+    noHourlyData:"No hourly data.",forecastUnavailable:"Hourly forecast unavailable.",minimum:"Min.",uv:"UV",noEvents:"No events.",noHistory:"No records.",
+    thresholdLow:"Low",thresholdMedium:"Medium",thresholdHigh:"High",thresholdVeryHigh:"Very high",
+    moderate:"Moderate",heavyRain:"Heavy rain",lightRain:"Light rain",clouds:"Clouds",rain:"Rain",
+    noDataValue:"No data",temperature:"Temperature",uvIndex:"UV index",cloudRain:"Clouds / rain",
+    notAvailable:"unavailable",groupUnit:"groups",factorUnit:"factors",active:"active",
+    selectedItems:"selected items",priorityHigh:"high",priorityMedium:"medium",priorityUsual:"usual",
+    preventivePriorityHigh:"Elevated preventive priority",reinforcePrevention:"Reinforce prevention",
+    usualPrevention:"Routine prevention",experimentalScore:"Experimental score",
+    notValidatedMedicalIndex:"This is not a validated medical index.",searchingForecast:"Checking forecast…",
+    noLocalityEntered:"Enter a location.",updatedFromOpenMeteo:"Data updated from Open-Meteo.",
+    noLocalityFound:"We couldn't find that location in Peru.",writeLocation:"Search for a location to generate a personalized prevention plan.",
+    recommendationPriority:"Priority",reason:"Reason",priorityTag:"PRIORITY",searchHistory:"Search history",
+    activeMonitoring:"Monitoring active",monitoringActive:"Preventive monitoring active",
+    monitoringActiveDescription:"The high threshold was not reached in this query.",
+    highHeatAlert:"HIGH HEAT ALERT",
+    highHeatDescription:"The current temperature reached or exceeded the 30 °C risk threshold.",
+    manualHeatAlertMessage:"Heat alert in {place}: {temperature} °C recorded, exceeding the 30 °C risk threshold.",
+    locationHeatAlertMessage:"Heat alert at your current location ({place}): {temperature} °C recorded at your current position.",
+    heatCaution:"High temperature caution",
+    heatCautionDescription:"Increase hydration, seek shade, and check the forecast.",
+    automaticSirenAlert:"HEAT ALERT: AUTOMATIC SIREN",sirenTestActive:"Siren test active",
+    sirenContinues:"The siren will continue until you press Stop alarm.",sirenStopped:"Siren stopped."
+  }
+};
+const languageSelects=[$("language-select"),$("language-select-dashboard")];
+let currentLanguage="es";
+function translate(key){
+  return traducciones[currentLanguage][key]||traducciones.es[key]||key;
+}
+function languageText(spanish,english){
+  return currentLanguage==="en"?english:spanish;
+}
+const recommendationTranslations={
+  "Hidratación y recuperación":"Hydration and recovery",
+  "Bebe agua con frecuencia, descansa en un lugar fresco y evita esperar a tener mucha sed.":"Drink water frequently, rest in a cool place, and don't wait until you are very thirsty.",
+  "Mantén agua disponible y bebe con regularidad, especialmente durante actividad física.":"Keep water available and drink regularly, especially during physical activity.",
+  "Reducir exposición al calor":"Reduce heat exposure",
+  "Evita ejercicio intenso y tareas exigentes al aire libre durante las horas más calurosas. Reprograma actividades si es posible.":"Avoid strenuous exercise and demanding outdoor tasks during the hottest hours. Reschedule activities if possible.",
+  "La temperatura actual o la máxima prevista alcanza el umbral alto del prototipo.":"The current or forecast high temperature has reached the prototype's high threshold.",
+  "Buscar un entorno fresco":"Find a cool environment",
+  "Permanece en un espacio ventilado o fresco, utiliza sombra y toma descansos frecuentes.":"Stay in a ventilated or cool place, seek shade, and take frequent breaks.",
+  "El pronóstico alcanza el nivel alto definido en la configuración; no constituye una alerta oficial.":"The forecast has reached the configured high level; this is not an official alert.",
+  "Planificar pausas y sombra":"Plan breaks and shade",
+  "Reduce el esfuerzo en las horas más calurosas y realiza pausas regulares en un lugar sombreado.":"Reduce exertion during the hottest hours and take regular breaks in a shaded place.",
+  "La temperatura actual o máxima prevista alcanza el umbral medio.":"The current or forecast high temperature has reached the medium threshold.",
+  "Mantener prevención habitual":"Maintain routine precautions",
+  "Continúa revisando el pronóstico, hidrátate y limita la exposición solar prolongada.":"Continue checking the forecast, stay hydrated, and limit prolonged sun exposure.",
+  "La temperatura se mantiene por debajo del umbral medio configurado.":"The temperature remains below the configured medium threshold.",
+  "Protección solar reforzada":"Enhanced sun protection",
+  "Busca sombra, usa sombrero, ropa protectora y protector solar; reduce el tiempo de exposición directa.":"Seek shade, wear a hat and protective clothing, use sunscreen, and reduce direct sun exposure.",
+  "El índice UV mide radiación ultravioleta, no temperatura.":"The UV index measures ultraviolet radiation, not temperature.",
+  "Protegerse de la radiación UV":"Protect yourself from UV radiation",
+  "Usa protección solar y ropa que cubra la piel; procura permanecer en sombra.":"Use sun protection and clothing that covers your skin; try to stay in the shade.",
+  "Prevención ante radiación UV":"UV radiation precautions",
+  "Considera sombrero, sombra y protección solar si vas a permanecer al aire libre.":"Consider wearing a hat, seeking shade, and using sun protection if you will be outdoors.",
+  "Atender la sensación térmica":"Account for the feels-like temperature",
+  "Evita esfuerzos prolongados y realiza descansos en un lugar fresco.":"Avoid prolonged exertion and take breaks in a cool place.",
+  "Ajustar actividad y descansos":"Adjust activity and breaks",
+  "Vigila cómo te sientes durante la actividad física y aumenta las pausas en ambientes calurosos.":"Pay attention to how you feel during physical activity and take more breaks in hot environments.",
+  "Precaución por viento":"Wind caution",
+  "Asegura objetos livianos y revisa las condiciones antes de realizar actividades al aire libre.":"Secure lightweight objects and check conditions before outdoor activities.",
+  "Cuidado de niños y bebés":"Care for children and babies",
+  "Ofrece agua con frecuencia, organiza descansos en sombra y evita dejarlos en vehículos o espacios calurosos.":"Offer water frequently, schedule breaks in the shade, and never leave them in vehicles or hot spaces.",
+  "Acompañamiento a adultos mayores":"Support for older adults",
+  "Comprueba su bienestar con regularidad, facilita agua y un lugar fresco, y evita esfuerzos durante las horas de mayor calor o radiación.":"Check on their well-being regularly, provide water and a cool place, and avoid exertion during the hottest hours or periods of strongest radiation.",
+  "Protección de mascotas":"Protect pets",
+  "Deja agua limpia y sombra disponibles; limita paseos en las horas más calurosas y evita superficies que puedan quemar sus patas.":"Provide clean water and shade, limit walks during the hottest hours, and avoid surfaces that could burn their paws.",
+  "Exposición al aire libre":"Outdoor exposure",
+  "Programa tareas en horas más frescas, incorpora pausas frecuentes y alterna sol y sombra; pospón esfuerzos intensos si el nivel es alto.":"Schedule tasks during cooler hours, take frequent breaks, alternate sun and shade, and postpone strenuous activity if the risk level is high.",
+  "Acceso a agua y sombra":"Access to water and shade",
+  "Planifica agua potable y un espacio sombreado o fresco antes de iniciar la actividad; reduce la exposición si no puedes asegurar ambos.":"Plan for drinking water and a shaded or cool space before starting an activity; reduce exposure if you cannot ensure both.",
+  "Afecciones respiratorias o cardíacas":"Respiratory or cardiac conditions",
+  "Sigue las indicaciones del profesional de salud, evita esfuerzos durante alertas de calor o UV alto y busca atención si aparecen síntomas preocupantes.":"Follow your health professional's guidance, avoid exertion during heat or high-UV alerts, and seek care if concerning symptoms develop.",
+  "Medidas combinadas para el perfil seleccionado":"Combined measures for the selected profile",
+  "Adapta horarios, pausas, agua y sombra a las personas seleccionadas y a sus condiciones de exposición; con alerta alta, reduce o pospón la actividad exterior.":"Adapt schedules, breaks, water, and shade to the selected people and their exposure conditions; under a high alert, reduce or postpone outdoor activity.",
+  "Condición seleccionada: trabajo al aire libre o exposición prolongada.":"Selected condition: outdoor work or prolonged exposure.",
+  "Condición seleccionada: acceso limitado a agua o sombra.":"Selected condition: limited access to water or shade.",
+  "Condición seleccionada: afecciones respiratorias o cardíacas; no modifiques tratamientos por cuenta propia.":"Selected condition: respiratory or cardiac conditions; do not change treatments on your own."
+};
+function translateRecommendation(text){
+  if(currentLanguage!=="en")return text;
+  if(recommendationTranslations[text])return recommendationTranslations[text];
+  return text
+    .replace(/^Temperatura máxima prevista: (.+) °C; umbrales configurados: medio desde (.+) °C y alto desde (.+) °C\.$/,"Forecast high: $1 °C; configured thresholds: medium at $2 °C and high at $3 °C.")
+    .replace(/^Índice UV horario consultado: (.+)\. El índice UV mide radiación ultravioleta, no temperatura\.$/,"Hourly UV index: $1. The UV index measures ultraviolet radiation, not temperature.")
+    .replace(/^Índice UV horario consultado: (.+)\.$/,"Hourly UV index: $1.")
+    .replace(/^La sensación térmica reportada es (.+) °C\.$/,"Reported feels-like temperature: $1 °C.")
+    .replace(/^Humedad relativa reportada: (.+)%; considera junto con la temperatura y la sensación térmica\.$/,"Reported relative humidity: $1%; consider it together with temperature and the feels-like value.")
+    .replace(/^Velocidad del viento reportada: (.+) km\/h\.$/,"Reported wind speed: $1 km/h.")
+    .replace(/^Perfil seleccionado: (.+); prioridad ajustada al nivel de temperatura y UV\.$/,"Selected profile: $1; priority adjusted for temperature and UV.")
+    .replace(/^Perfil seleccionado: mascotas; considera temperatura y radiación UV del pronóstico\.$/,"Selected profile: pets; consider forecast temperature and UV radiation.")
+    .replace(/^Grupos: (.+)\. Condicionantes: (.+)\. Nivel considerado: temperatura y UV\.$/,"Groups: $1. Risk factors: $2. Considered levels: temperature and UV.");
+}
+function applyLanguage(language){
+  const previousLanguage=currentLanguage;
+  const dictionary=traducciones[language]||traducciones.es;
+  currentLanguage=language;
+  languageSelects.forEach(select=>{select.value=language});
+  document.documentElement.lang=language;
+  app.querySelectorAll("[data-i18n]").forEach(element=>{
+    const translation=dictionary[element.dataset.i18n];
+    if(translation!==undefined)element.innerText=translation;
+  });
+  app.querySelectorAll("[data-i18n-placeholder]").forEach(element=>{
+    const translation=dictionary[element.dataset.i18nPlaceholder];
+    if(translation!==undefined)element.setAttribute("placeholder",translation);
+  });
+  app.querySelectorAll("[data-i18n-aria-label]").forEach(element=>{
+    const translation=dictionary[element.dataset.i18nAriaLabel];
+    if(translation!==undefined)element.setAttribute("aria-label",translation);
+  });
+  app.querySelectorAll("[data-i18n-title]").forEach(element=>{
+    const translation=dictionary[element.dataset.i18nTitle];
+    if(translation!==undefined)element.setAttribute("title",translation);
+  });
+  if(monitoring)$("monitor").textContent=translate("activeMonitoring");
+  if(currentUser&&currentUser.isDemo)$("user-name").textContent=translate("demoUserName");
+  updateWelcome();
+  refreshDashboardLanguage();
+  if(heatAlertDetails)renderHeatAlertMessage();
+  renderHistory();
+  renderEvents();
+  renderGamification();
+  if(activeAchievement)renderAchievementToast(activeAchievement);
+  if(currentUser&&previousLanguage!==language)markGamification("changedLanguage");
+}
+function refreshDashboardLanguage(){
+  if(!weatherData)return;
+  const {place,d}=weatherData;
+  const current=d.current,max=d.daily.temperature_2m_max[0],riskLevel=level(current.temperature_2m);
+  $("forecast-location").textContent=formatPlaceName(place);
+  $("location-name").textContent=formatPlaceName(place);
+  $("risk").textContent=translate("riskPrefix")+" "+translate(riskLevel.name==="ALTO"?"riskHigh":riskLevel.name==="MEDIO"?"riskMedium":"riskLow");
+  $("condition").textContent=describe(current.weather_code);
+  renderHourly(d);
+  renderDaily(d);
+  recommendations(current.temperature_2m,max);
+  evaluate();
+  if(sirenOn){
+    $("alarm-heading").textContent=translate(sirenAutomatic?"automaticSirenAlert":"sirenTestActive");
+    $("alarm-description").textContent=translate("sirenContinues");
+  }else if(current.temperature_2m>=ALARM_TEMPERATURE_THRESHOLD){
+    $("alarm-heading").textContent=translate("highHeatAlert");
+    $("alarm-description").textContent=translate("highHeatDescription");
+  }else if(current.temperature_2m>=settings.medium){
+    $("alarm-heading").textContent=translate("heatCaution");
+    $("alarm-description").textContent=translate("heatCautionDescription");
+  }else{
+    $("alarm-heading").textContent=translate("monitoringActive");
+    $("alarm-description").textContent=translate("monitoringActiveDescription");
+  }
+  $("monitor").textContent=translate(monitoring?"activeMonitoring":"activateMonitoring");
+  renderMapLegend();
+}
+languageSelects.forEach(select=>select.addEventListener("change",event=>applyLanguage(event.target.value)));
+const FOTOS_DIA=[
+  "https://images.unsplash.com/photo-1545330785-15356daae141?q=80&w=1590&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D",
+  "https://images.pexels.com/photos/19985009/pexels-photo-19985009.jpeg",
+  "https://images.pexels.com/photos/3059092/pexels-photo-3059092.jpeg"
+];
+const FOTOS_NOCHE=[
+  "https://images.pexels.com/photos/17043687/pexels-photo-17043687.jpeg",
+  "https://images.pexels.com/photos/24039278/pexels-photo-24039278.jpeg",
+  "https://images.pexels.com/photos/8150295/pexels-photo-8150295.jpeg"
+];
+document.body.classList.toggle("modo-dia",app.classList.contains("modo-dia"));
+let fotosActuales=document.body.classList.contains("modo-dia")?FOTOS_DIA:FOTOS_NOCHE;
+const landingSlides=Array.from(document.querySelectorAll("#landing-home .landing-slide"));
+let activeLandingSlide=0,nextLandingImage=0;
+landingSlides.forEach((slide,index)=>{
+  slide.style.backgroundImage=`url("${fotosActuales[index%fotosActuales.length]}")`;
+});
+[...FOTOS_DIA,...FOTOS_NOCHE].forEach(url=>{const image=new Image();image.src=url});
+const themeToggles=[$("theme-toggle"),$("theme-toggle-dashboard")];
+function syncThemeControls(){
+  const isDay=app.classList.contains("modo-dia");
+  themeToggles.forEach(button=>{
+    button.setAttribute("aria-pressed",String(isDay));
+  });
+}
+themeToggles.forEach(button=>button.addEventListener("click",()=>{
+  const isDay=app.classList.toggle("modo-dia");
+  document.body.classList.toggle("modo-dia",isDay);
+  fotosActuales=document.body.classList.contains("modo-dia")?FOTOS_DIA:FOTOS_NOCHE;
+  nextLandingImage=0;
+  landingSlides[activeLandingSlide].style.backgroundImage=`url("${fotosActuales[0]}")`;
+  landingSlides[1-activeLandingSlide].style.backgroundImage=`url("${fotosActuales[1]}")`;
+  syncThemeControls();
+  refreshForecastSemaphores();
+  if(!isDay&&currentUser)markGamification("changedNightMode");
+}));
+syncThemeControls();
+setInterval(()=>{
+  const nextSlide=1-activeLandingSlide;
+  nextLandingImage=(nextLandingImage+1)%fotosActuales.length;
+  landingSlides[nextSlide].style.backgroundImage=`url("${fotosActuales[nextLandingImage]}")`;
+  landingSlides[nextSlide].classList.add("is-active");
+  landingSlides[activeLandingSlide].classList.remove("is-active");
+  activeLandingSlide=nextSlide;
+},5000);
+const ACCOUNT_KEY="ca_demo_accounts_v1";
+const SESSION_KEY="ca_demo_session_v1";
+const ALARM_TEMPERATURE_THRESHOLD=30;
+let currentUser=null;
+let weatherData=null,map=null,mapLayer="temperature",mapUpdateId=0,departmentLayer=null,departmentGeoJsonPromise=null,weatherRequestId=0,monitoring=false,monitorTimer=null,currentWeatherSource="manual",heatAlertKey="",heatAlertDetails=null;
+let suggestionRequestId=0,suggestionTimer=null;
+let audioCtx=null,oscillators=[],sirenTimer=null,sirenOn=false,sirenAutomatic=false,lastAutoAlarm=0,sirenRequestId=0;
+let settings={medium:26,high:32};
+let history=[],events=[];
+let gamification=null;
+let achievementQueue=[],achievementTimer=null,activeAchievement=null;
+const badgeDefinitions=[
+  {id:"readPrevention",icon:"💧",name:"badgeShade",description:"badgeShadeDescription"},
+  {id:"searchedThreeCities",icon:"🕵️‍♂️",name:"badgeDetective",description:"badgeDetectiveDescription"},
+  {id:"usedRules",icon:"⚙️",name:"badgeOperator",description:"badgeOperatorDescription"},
+  {id:"selectedVulnerable",icon:"🧑‍🤝‍🧑",name:"badgeProtector",description:"badgeProtectorDescription"},
+  {id:"testedSiren",icon:"🚨",name:"badgeSiren",description:"badgeSirenDescription"},
+  {id:"downloadedPdf",icon:"📜",name:"badgeAnalyst",description:"badgeAnalystDescription"},
+  {id:"exploredFooter",icon:"🎁",name:"badgeEagle",description:"badgeEagleDescription"},
+  {id:"changedNightMode",icon:"🌙",name:"badgeNightWatch",description:"badgeNightWatchDescription"},
+  {id:"changedLanguage",icon:"🌐",name:"badgeTranslator",description:"badgeTranslatorDescription"},
+  {id:"streakThreeDays",icon:"🏅",name:"badgeFaithfulGuardian",description:"badgeFaithfulGuardianDescription"}
+];
+applyLanguage(languageSelects[0].value);
+
+function read(key,fallback){
+  try{const v=JSON.parse(localStorage.getItem(key)||"null");return v===null?fallback:v}catch(e){return fallback}
+}
+function write(key,val){try{localStorage.setItem(key,JSON.stringify(val));return true}catch(e){return false}}
+function accounts(){return read(ACCOUNT_KEY,[])}
+function msg(id,text){$(id).textContent=text}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function stamp(){return new Date().toLocaleString(currentLanguage==="en"?"en-US":"es-PE")}
+function fmt(n){return Number.isFinite(Number(n))?Number(n).toFixed(1)+" °C":"--"}
+function playAchievementSound(){
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass){console.warn("Web Audio API no está disponible; no se puede reproducir el sonido del logro.");return}
+  try{
+    if(!audioCtx)audioCtx=new AudioContextClass();
+    const play=()=>{
+      if(audioCtx.state!=="running")return;
+      const start=audioCtx.currentTime;
+      [880,1174.66].forEach((frequency,index)=>{
+        const oscillator=audioCtx.createOscillator(),gain=audioCtx.createGain(),when=start+index*.12;
+        oscillator.type="sine";
+        oscillator.frequency.setValueAtTime(frequency,when);
+        gain.gain.setValueAtTime(.0001,when);
+        gain.gain.exponentialRampToValueAtTime(.12,when+.015);
+        gain.gain.exponentialRampToValueAtTime(.0001,when+.18);
+        oscillator.connect(gain);gain.connect(audioCtx.destination);
+        oscillator.start(when);oscillator.stop(when+.19);
+      });
+    };
+    if(audioCtx.state==="running")play();
+    else audioCtx.resume().then(play).catch(error=>console.warn("No se pudo reproducir el sonido del logro.",error));
+  }catch(error){console.warn("No se pudo reproducir el sonido del logro.",error)}
+}
+function showNextAchievementToast(){
+  const badge=achievementQueue.shift();
+  if(!badge)return;
+  activeAchievement=badge;
+  const toast=$("achievement-toast");
+  renderAchievementToast(badge);
+  toast.hidden=false;
+  requestAnimationFrame(()=>toast.classList.add("is-visible"));
+  playAchievementSound();
+  achievementTimer=setTimeout(()=>dismissAchievementToast(),4500);
+}
+function queueAchievementToast(badge){
+  achievementQueue.push(badge);
+  if($("achievement-toast").hidden)showNextAchievementToast();
+}
+function dismissAchievementToast(openProfile=false){
+  const toast=$("achievement-toast");
+  if(toast.hidden||!toast.classList.contains("is-visible"))return;
+  if(achievementTimer)clearTimeout(achievementTimer);
+  achievementTimer=null;
+  toast.classList.remove("is-visible");
+  setTimeout(()=>{
+    toast.hidden=true;
+    activeAchievement=null;
+    showNextAchievementToast();
+  },230);
+  if(openProfile)switchDashboardView("view-profile");
+}
+function renderAchievementToast(badge){
+  $("achievement-toast-icon").textContent=badge.icon;
+  $("achievement-toast-title").textContent=translate("achievementUnlocked")+" · "+translate(badge.name);
+  $("achievement-toast-description").textContent=translate(badge.description);
+  $("achievement-toast").setAttribute("aria-label",translate("achievementToastAction").replace("{name}",translate(badge.name)));
+}
+function isBadgeUnlocked(id){
+  if(!gamification)return false;
+  if(id==="searchedThreeCities")return gamification.searchedCities.length>=3;
+  if(id==="streakThreeDays")return gamification.streakDays>=3;
+  return Boolean(gamification[id]);
+}
+function currentBadgeUnlocks(){
+  return Object.fromEntries(badgeDefinitions.map(badge=>[badge.id,isBadgeUnlocked(badge.id)]));
+}
+function gamificationKey(){return currentUser?"ca_gamification_"+currentUser.email:""}
+function loadGamification(){
+  const saved=read(gamificationKey(),{});
+  return{
+    streakDays:Number.isFinite(saved.streakDays)?saved.streakDays:0,
+    lastActiveDate:typeof saved.lastActiveDate==="string"?saved.lastActiveDate:"",
+    searchedCities:Array.isArray(saved.searchedCities)?saved.searchedCities:[],
+    readPrevention:Boolean(saved.readPrevention),usedRules:Boolean(saved.usedRules),
+    selectedVulnerable:Boolean(saved.selectedVulnerable),testedSiren:Boolean(saved.testedSiren),
+    downloadedPdf:Boolean(saved.downloadedPdf),exploredFooter:Boolean(saved.exploredFooter),
+    changedNightMode:Boolean(saved.changedNightMode),changedLanguage:Boolean(saved.changedLanguage)
+  };
+}
+function saveGamification(){
+  if(currentUser&&gamification){
+    msg("profile-save-status",write(gamificationKey(),gamification)?"":translate("profileSaveError"));
+  }
+}
+function markGamification(key,value=true){
+  if(!currentUser||!gamification)return;
+  const previousUnlocks=currentBadgeUnlocks();
+  if(key==="searchedCities"){
+    const city=String(value||"").trim();
+    if(city&&!gamification.searchedCities.some(item=>normalizeLocationName(item)===normalizeLocationName(city)))gamification.searchedCities.push(city);
+  }else if(key in gamification)gamification[key]=value;
+  saveGamification();
+  renderGamification();
+  const nextUnlocks=currentBadgeUnlocks();
+  badgeDefinitions.forEach(badge=>{
+    if(!previousUnlocks[badge.id]&&nextUnlocks[badge.id])queueAchievementToast(badge);
+  });
+}
+function recordDailyVisit(){
+  const previousUnlocks=currentBadgeUnlocks();
+  const now=new Date(),today=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  if(gamification.lastActiveDate!==today){
+    const yesterday=new Date(Date.parse(today+"T00:00:00Z")-86400000).toISOString().slice(0,10);
+    gamification.streakDays=gamification.lastActiveDate===yesterday?gamification.streakDays+1:1;
+    gamification.lastActiveDate=today;
+    saveGamification();
+    const nextUnlocks=currentBadgeUnlocks();
+    badgeDefinitions.forEach(badge=>{
+      if(!previousUnlocks[badge.id]&&nextUnlocks[badge.id])queueAchievementToast(badge);
+    });
+  }
+}
+function updateWelcome(){
+  if(!currentUser)return;
+  $("welcome-user").textContent=currentUser.isDemo?translate("demoUserName"):(currentUser.username||currentUser.name);
+}
+function renderGamification(){
+  if(!currentUser||!gamification)return;
+  const streak=gamification.streakDays;
+  const goal=streak<7?7:(Math.floor(streak/7)+1)*7;
+  const tierStart=goal-7,progress=goal>7?streak-tierStart:streak;
+  $("profile-level-title").textContent=translate(streak>=7?"guardianLevel":"explorerLevel");
+  $("profile-streak-description").textContent=streak===1?translate("streakDescriptionOne"):translate("streakDescription").replace("{days}",String(streak));
+  $("profile-progress-fill").style.width=Math.min(100,Math.max(0,progress/7*100))+"%";
+  $("profile-progress").setAttribute("aria-valuenow",String(Math.min(progress,7)));
+  $("profile-next-level").textContent=translate("nextLevelProgress").replace("{current}",String(progress)).replace("{goal}","7");
+  const unlocked=currentBadgeUnlocks();
+  $("badge-grid").innerHTML=badgeDefinitions.map(badge=>{
+    const active=unlocked[badge.id];
+    return'<article class="game-badge'+(active?" is-unlocked":" is-locked")+'"><span class="game-badge-icon">'+badge.icon+'</span><strong>'+esc(translate(badge.name))+'</strong><div class="game-badge-status">'+esc(translate(badge.description))+'</div><div class="game-badge-status">'+esc(translate(active?"badgeUnlocked":"badgeLocked"))+'</div></article>';
+  }).join("");
+}
+function showAuth(mode){
+  $("auth-screen").classList.remove("hidden");
+  $("dashboard").classList.add("hidden");
+  setLandingLock(true);
+  $("login-form").classList.toggle("hidden",mode!=="login");
+  $("register-form").classList.toggle("hidden",mode!=="register");
+  $("tab-login").className=mode==="login"?"primary":"secondary";
+  $("tab-register").className=mode==="register"?"primary":"secondary";
+}
+function switchDashboardView(viewId){
+  app.querySelectorAll(".dashboard-tab").forEach(tab=>{
+    const active=tab.dataset.view===viewId;
+    tab.setAttribute("aria-selected",String(active));
+  });
+  app.querySelectorAll(".dashboard-view").forEach(view=>{view.hidden=view.id!==viewId});
+  if(viewId==="view-alerts")markGamification("readPrevention");
+  if(viewId==="view-monitoring"&&map)setTimeout(()=>map.invalidateSize(),0);
+}
+function showDashboard(user){
+  currentUser=user;
+  loginModal.classList.add("hidden");
+  $("auth-screen").classList.add("hidden");
+  $("dashboard").classList.remove("hidden");
+  setLandingLock(false);
+  $("user-name").textContent=user.isDemo?translate("demoUserName"):user.name;
+  gamification=loadGamification();
+  recordDailyVisit();
+  updateWelcome();
+  renderGamification();
+  switchDashboardView("view-monitoring");
+  history=read("ca_history_"+user.email,[]);
+  events=read("ca_events_"+user.email,[]);
+  renderHistory();renderEvents();
+  if(!map)initMap();
+  msg("message",translate("waitingQuery"));
+}
+async function hashPassword(password){
+  if(!crypto.subtle)throw Error("Para crear cuentas, abre esta página en localhost o en un sitio HTTPS. El navegador no admite cifrado seguro en este contexto.");
+  const bytes=new TextEncoder().encode(password);
+  const digest=await crypto.subtle.digest("SHA-256",bytes);
+  return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+$("tab-login").onclick=()=>showAuth("login");
+$("tab-register").onclick=()=>showAuth("register");
+$("go-register").onclick=()=>showAuth("register");
+$("go-login").onclick=()=>showAuth("login");
+
+$("register-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  msg("register-msg","");
+  const username=$("register-name").value.trim();
+  const name=username;
+  const normalizedUsername=username.toLowerCase();
+  const email=$("register-email").value.trim().toLowerCase();
+  const password=$("register-password").value;
+  const confirmPassword=$("register-confirm").value;
+  if(name.length<2){msg("register-msg","Escribe un nombre válido.");return}
+  if(!/^[A-Za-z0-9._-]{3,30}$/.test(username)){msg("register-msg",translate("usernameInvalid"));return}
+  if(password.length<8){msg("register-msg","La contraseña debe tener al menos 8 caracteres.");return}
+  if(password!==confirmPassword){msg("register-msg","Las contraseñas no coinciden.");return}
+  const existingAccounts=accounts();
+  if(existingAccounts.some(a=>a.email===email)){msg("register-msg","Ya existe una cuenta con ese correo.");return}
+  if(existingAccounts.some(a=>String(a.username||"").toLowerCase()===normalizedUsername)){msg("register-msg",translate("usernameTaken"));return}
+  try{
+    const passwordHash=await hashPassword(password);
+    const list=existingAccounts;
+    list.push({name,username,email,passwordHash,createdAt:new Date().toISOString()});
+    if(!write(ACCOUNT_KEY,list)){msg("register-msg","No se pudo guardar la cuenta en este navegador.");return}
+    $("register-form").reset();
+    msg("login-msg",translate("accountCreated"));
+    showAuth("login");
+    $("login-username").value=username;
+    $("login-email").value=email;
+    logOutOfDashboard();
+  }catch(err){msg("register-msg",err.message||"No se pudo crear la cuenta.")}
+});
+function logOutOfDashboard(){
+  $("dashboard").classList.add("hidden");
+  $("auth-screen").classList.remove("hidden");
+  loginModal.classList.add("hidden");
+  setLandingLock(true);
+}
+$("login-form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  msg("login-msg","");
+  const username=$("login-username").value.trim().toLowerCase();
+  const email=username?"":$("login-email").value.trim().toLowerCase();
+  const password=$("login-password").value;
+  try{
+    const list=accounts();
+    const matchesIdentifier=a=>(!username||String(a.username||"").toLowerCase()===username)&&(!email||a.email===email);
+    const existing=list.find(matchesIdentifier);
+    if(!username&&!email){msg("login-msg",translate("loginIdentifierRequired"));return}
+    if(email==="admin@test.com"&&password==="123456"&&(!existing||existing.isDemo)){
+      const user=existing||{name:"Administrador de prueba",email,isDemo:true,createdAt:new Date().toISOString()};
+      if(!existing){
+        list.push(user);
+        if(!write(ACCOUNT_KEY,list)){msg("login-msg","No se pudo guardar la cuenta de prueba en este navegador.");return}
+      }
+      if(!write(SESSION_KEY,{email:user.email})){msg("login-msg","No se pudo guardar la sesión en este navegador.");return}
+      $("login-form").reset();
+      showDashboard(user);
+      log("Sesión de prueba iniciada.");
+      return;
+    }
+    const hash=await hashPassword(password);
+    const user=list.find(a=>matchesIdentifier(a)&&a.passwordHash===hash);
+    if(!user){msg("login-msg",translate("loginInvalid"));return}
+    write(SESSION_KEY,{email:user.email});
+    $("login-form").reset();
+    showDashboard(user);
+    log("Sesión iniciada.");
+  }catch(err){msg("login-msg",err.message||"No se pudo iniciar sesión.")}
+});
+$("logout").onclick=()=>{
+  stopSiren(false);
+  monitoring=false;
+  if(monitorTimer)clearInterval(monitorTimer);
+  monitorTimer=null;
+  try{localStorage.removeItem(SESSION_KEY)}catch(e){}
+  currentUser=null;
+  showAuth("login");
+};
+function saveUserData(){
+  if(!currentUser)return;
+  write("ca_history_"+currentUser.email,history);
+  write("ca_events_"+currentUser.email,events);
+}
+function log(text){
+  events.unshift({time:stamp(),message:text});
+  events=events.slice(0,100);
+  saveUserData();renderEvents();
+}
+function renderEvents(){
+  $("events").innerHTML=events.length?events.map(e=>'<div class="logline"><span style="color:#66c5ff">'+esc(e.time)+'</span> — '+esc(e.message)+'</div>').join(""):'<div class="muted">'+translate("noEvents")+'</div>';
+}
+function renderHistory(){
+  const riskBadge=risk=>{
+    const value=String(risk||"").toUpperCase();
+    const cls=value==="ALTO"?"high":value==="MEDIO"?"medium":"low";
+    const label=translate(value==="ALTO"?"riskHigh":value==="MEDIO"?"riskMedium":"riskLow");
+    return '<span class="risk-badge '+cls+'">'+label+'</span>';
+  };
+  const download=languageText("Descargar reporte PDF","Download PDF report");
+  $("history").innerHTML=history.length?history.map((h,index)=>'<tr><td>'+esc(h.time)+'</td><td>'+esc(h.name)+'</td><td>'+esc(h.temp)+'°C</td><td>'+esc(h.max)+'°C</td><td>'+riskBadge(h.risk)+'</td><td><button type="button" class="pdf-icon-button" data-history-pdf="'+index+'" title="'+download+'" aria-label="'+download+' de '+esc(h.name)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"/></svg></button></td></tr>').join(""):'<tr><td colspan="6">'+translate("noHistory")+'</td></tr>';
+}
+function level(t){
+  const lightMode=app.classList.contains("modo-dia");
+  if(t>=settings.high)return{name:"ALTO",color:lightMode?"#bd2c2c":"#ff6474",fillColor:lightMode?"#d63c3c":"#ff6474",cls:"high",icon:"🔴"};
+  if(t>=settings.medium)return{name:"MEDIO",color:lightMode?"#8a5a00":"#ffd05a",fillColor:lightMode?"#d79a00":"#ffd05a",cls:"medium",icon:"🟡"};
+  return{name:"BAJO",color:lightMode?"#237a3b":"#35d99b",fillColor:lightMode?"#2e9d50":"#35d99b",cls:"low",icon:"🟢"};
+}
+async function getWeather(lat,lon){
+  const q=new URLSearchParams({
+    latitude:lat,longitude:lon,timezone:"auto",forecast_days:"7",
+    current:"temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,cloud_cover,precipitation,rain",
+    hourly:"temperature_2m,apparent_temperature,uv_index",
+    daily:"temperature_2m_max,temperature_2m_min,uv_index_max"
+  });
+  const r=await fetch("https://api.open-meteo.com/v1/forecast?"+q);
+  if(!r.ok)throw Error("No se pudo consultar el servicio meteorológico.");
+  const d=await r.json();
+  if(!d.current||!d.daily||!d.hourly||
+    !Number.isFinite(d.current.temperature_2m)||
+    !Array.isArray(d.daily.temperature_2m_max)||!Array.isArray(d.daily.temperature_2m_min)||
+    !Array.isArray(d.daily.time)||d.daily.time.length<5||d.daily.time.length>7||
+    d.daily.temperature_2m_max.length!==d.daily.time.length||
+    d.daily.temperature_2m_min.length!==d.daily.time.length||
+    !Array.isArray(d.hourly.temperature_2m)||!d.hourly.temperature_2m.length||
+    !Array.isArray(d.hourly.time)||d.hourly.time.length!==d.hourly.temperature_2m.length||
+    !Array.isArray(d.hourly.uv_index)||d.hourly.uv_index.length!==d.hourly.temperature_2m.length||
+    d.daily.temperature_2m_max.some(value=>!Number.isFinite(value))||
+    d.daily.temperature_2m_min.some(value=>!Number.isFinite(value))||
+    !d.hourly.temperature_2m.some(Number.isFinite)||
+    !d.hourly.time.some(value=>typeof value==="string"&&value.length>=16)){
+    throw Error("La respuesta meteorológica está incompleta o no contiene temperaturas válidas.");
+  }
+  return d;
+}
+function normalizeLocationName(name){
+  return String(name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+}
+function cleanRegionName(region){
+  return String(region||"").replace(/^(departamento|region)\s+de\s+/i,"").trim();
+}
+function formatPlaceName(place){
+  const name=String(place.name||"Mi ubicación").trim(),region=cleanRegionName(place.region);
+  return region&&normalizeLocationName(name)!==normalizeLocationName(region)?name+", "+region:name;
+}
+function clearLocalitySuggestions(){
+  $("peru-departments").querySelectorAll("option[data-locality]").forEach(option=>option.remove());
+}
+async function updateLocalitySuggestions(query){
+  const requestId=++suggestionRequestId;
+  if(query.length<2){clearLocalitySuggestions();return}
+  const searchName=query.split(",")[0].trim();
+  const q=new URLSearchParams({name:searchName,count:10,language:"es",format:"json",countryCode:"PE"});
+  try{
+    const response=await fetch("https://geocoding-api.open-meteo.com/v1/search?"+q);
+    if(!response.ok)throw Error("Geocodificación no disponible.");
+    const data=await response.json();
+    if(requestId!==suggestionRequestId||$("district").value.trim()!==query)return;
+    clearLocalitySuggestions();
+    const datalist=$("peru-departments"),existing=new Set(Array.from(datalist.options,option=>normalizeLocationName(option.value)));
+    (data.results||[]).filter(result=>result.country_code==="PE"&&result.name).forEach(result=>{
+      const value=formatPlaceName({name:result.name,region:result.admin1||""}),normalized=normalizeLocationName(value);
+      if(existing.has(normalized))return;
+      existing.add(normalized);
+      const option=document.createElement("option");
+      option.value=value;option.dataset.locality="true";datalist.appendChild(option);
+    });
+  }catch(e){if(requestId===suggestionRequestId)clearLocalitySuggestions()}
+}
+function scheduleLocalitySuggestions(){
+  if(suggestionTimer)clearTimeout(suggestionTimer);
+  const query=$("district").value.trim();
+  suggestionTimer=setTimeout(()=>updateLocalitySuggestions(query),250);
+}
+async function geocode(query){
+  const [requestedName,...regionParts]=query.split(",").map(part=>part.trim());
+  const requestedRegion=regionParts.join(",");
+  const q=new URLSearchParams({name:requestedName||query,count:10,language:"es",format:"json",countryCode:"PE"});
+  const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?"+q);
+  if(!r.ok)throw Error("No se pudo buscar la localidad.");
+  const d=await r.json();
+  const results=(d.results||[]).filter(p=>p.country_code==="PE");
+  if(!results.length)throw Error("No encontramos esa localidad en Perú.");
+  const requestedNameNormalized=normalizeLocationName(requestedName||query);
+  const requestedRegionNormalized=normalizeLocationName(cleanRegionName(requestedRegion));
+  const p=results.find(x=>normalizeLocationName(x.name)===requestedNameNormalized&&(!requestedRegionNormalized||normalizeLocationName(cleanRegionName(x.admin1))===requestedRegionNormalized))||results.find(x=>normalizeLocationName(x.name)===requestedNameNormalized)||results[0];
+  return{name:p.name,region:cleanRegionName(p.admin1||""),lat:p.latitude,lon:p.longitude};
+}
+async function reverseGeocode(lat,lon){
+  const q=new URLSearchParams({format:"jsonv2",lat:String(lat),lon:String(lon),zoom:"10",addressdetails:"1","accept-language":"es"});
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),4000);
+  try{
+    const r=await fetch("https://nominatim.openstreetmap.org/reverse?"+q,{signal:controller.signal});
+    if(!r.ok)throw Error("No se pudo identificar la localidad.");
+    const d=await r.json(),address=d.address||{};
+    const name=address.city_district||address.district||address.suburb||address.town||address.city||address.village||address.municipality||address.county||address.state||d.name;
+    if(!name)throw Error("El servicio no devolvió un nombre de localidad.");
+    return{name,region:address.state||address.region||"",lat,lon};
+  }finally{clearTimeout(timeout)}
+}
+function describe(code){
+  if(code===0)return translate("clearSky");
+  if([1,2].includes(code))return translate("partlyCloudy");
+  if(code===3)return translate("cloudy");
+  if([45,48].includes(code))return translate("fog");
+  if(code>=51&&code<=67)return translate("drizzleRain");
+  if(code>=71&&code<=86)return translate("solidPrecipitation");
+  if(code>=95)return translate("storm");
+  return translate("variableConditions");
+}
+async function search(){
+  if(!$("dashboard")||$("dashboard").classList.contains("hidden"))return;
+  unlockAudio().catch(e=>{$("alarm-description").textContent="No se pudo habilitar el audio: "+e.message});
+  const query=$("district").value.trim();
+  if(!query){msg("message",languageText("Escribe una localidad.","Enter a location."));return}
+  const requestId=++weatherRequestId;
+  $("search").disabled=true;msg("message",translate("searchingForecast"));
+  try{
+    const place=await geocode(query);
+    const d=await getWeather(place.lat,place.lon);
+    if(requestId!==weatherRequestId)return;
+    renderMain(place,d,true,"manual");
+  }catch(e){if(requestId===weatherRequestId){msg("message",e.message||languageText("Error de consulta.","Query error."));log(languageText("Error de consulta meteorológica.","Weather query error."))}}
+  finally{if(requestId===weatherRequestId)$("search").disabled=false}
+}
+function renderMain(place,d,record=true,source=currentWeatherSource){
+  weatherData={place,d};
+  if(record)currentWeatherSource=source;
+  const c=d.current,max=d.daily.temperature_2m_max[0],r=level(c.temperature_2m);
+  const displayName=formatPlaceName(place);
+  if(currentUser)markGamification("searchedCities",displayName);
+  $("forecast-location").textContent=displayName;
+  $("location-name").textContent=displayName;
+  $("temp").textContent=Number(c.temperature_2m).toFixed(1)+"°";
+  $("risk").textContent=translate("riskPrefix")+" "+translate(r.name==="ALTO"?"riskHigh":r.name==="MEDIO"?"riskMedium":"riskLow");$("risk").className="risk "+r.cls;
+  $("condition").textContent=describe(c.weather_code);
+  $("feels").textContent=fmt(c.apparent_temperature);
+  $("max").textContent=fmt(max);
+  $("humidity").textContent=Math.round(c.relative_humidity_2m)+" %";
+  $("wind").textContent=Number(c.wind_speed_10m).toFixed(1)+" km/h";
+  $("updated").textContent=stamp();
+  renderHourly(d);renderDaily(d);recommendations(c.temperature_2m,max);evaluate();
+  if(record){
+    history.unshift({time:stamp(),name:displayName,temp:Number(c.temperature_2m).toFixed(1),max:Number(max).toFixed(1),risk:r.name});
+    history=history.slice(0,100);saveUserData();renderHistory();
+    msg("message",translate("updatedFromOpenMeteo"));
+    log("Pronóstico consultado para "+place.name+". Nivel orientativo: "+r.name+".");
+  }
+  if(map){map.setView([place.lat,place.lon],9);updateMap()}
+  checkAlert(c.temperature_2m,max,place,source,record);
+}
+function updateGeolocatedPlaceName(place,requestId){
+  if(requestId!==weatherRequestId||currentWeatherSource!=="geolocation"||!weatherData)return;
+  const displayedPlace=weatherData.place;
+  if(displayedPlace.lat!==place.lat||displayedPlace.lon!==place.lon)return;
+  displayedPlace.name=place.name;
+  displayedPlace.region=place.region;
+  const displayName=formatPlaceName(displayedPlace);
+  $("forecast-location").textContent=displayName;
+  $("location-name").textContent=displayName;
+  $("district").value=displayName;
+  if(history[0]&&history[0].name===formatPlaceName({name:languageText("Mi ubicación actual","Current location"),region:""})){
+    history[0].name=displayName;
+    saveUserData();
+    renderHistory();
+  }
+  if(heatAlertDetails&&heatAlertDetails.source==="geolocation"){
+    heatAlertDetails.place=displayedPlace;
+    renderHeatAlertMessage();
+  }
+}
+function renderHourly(d){
+  const times=d.hourly.time,now=d.current.time;
+  const start=Math.max(0,times.findIndex(t=>t>=now));
+  let html="";
+  for(let i=start;i<Math.min(start+16,times.length);i++){
+    const t=d.hourly.temperature_2m[i],time=times[i]?.slice(11,16);
+    if(!Number.isFinite(t)||!time)continue;
+    const r=level(t);
+    const category=translate(r.name==="ALTO"?"riskHigh":r.name==="MEDIO"?"riskMedium":"riskLow");
+    html+='<div class="hour"><span class="muted">'+time+'</span><strong style="color:'+r.color+'">'+Number(t).toFixed(1)+' °C</strong><span class="forecast-level '+r.cls+'"><span aria-hidden="true">'+r.icon+'</span><span>'+translate("riskPrefix")+' '+category+'</span></span><div class="muted">'+translate("uv")+' '+(Number.isFinite(d.hourly.uv_index?.[i])?d.hourly.uv_index[i]:"--")+'</div></div>';
+  }
+  $("hourly").innerHTML=html||'<div class="muted">'+translate("forecastUnavailable")+'</div>';
+}
+function renderDaily(d){
+  $("daily").innerHTML=d.daily.time.slice(0,7).map((date,i)=>{
+    const max=d.daily.temperature_2m_max[i],min=d.daily.temperature_2m_min[i],r=level(max);
+    const day=i===0?translate("today"):new Date(date+"T12:00:00").toLocaleDateString(currentLanguage==="en"?"en-US":"es-PE",{weekday:"short",day:"2-digit"});
+    const category=translate(r.name==="ALTO"?"riskHigh":r.name==="MEDIO"?"riskMedium":"riskLow");
+    return '<div style="display:grid;grid-template-columns:60px 1fr 58px;gap:8px;align-items:center;margin:12px 0;font-size:12px"><span>'+day+'</span><div><div style="height:8px;background:#293c54;border-radius:10px;overflow:hidden"><div style="width:'+Math.min(100,max/45*100)+'%;height:100%;background:'+r.fillColor+'"></div></div><div class="muted">'+translate("minimum")+' '+Number(min).toFixed(1)+'° · <span class="forecast-level '+r.cls+'">'+r.icon+' '+category+'</span></div></div><strong style="color:'+r.color+';text-align:right">'+Number(max).toFixed(1)+'°</strong></div>';
+  }).join("");
+}
+function refreshForecastSemaphores(){
+  if(!weatherData)return;
+  renderHourly(weatherData.d);
+  renderDaily(weatherData.d);
+  renderMapLegend();
+  if(map&&mapLayer==="temperature")updateMap();
+}
+function recommendations(t,max){
+  const peak=Math.max(Number(t)||0,Number(max)||0);
+  const r=level(peak);
+  const selected=Array.from(app.querySelectorAll(".vuln:checked"));
+  const selectedGroups=selected.filter(input=>input.dataset.profile==="group");
+  const selectedFactors=selected.filter(input=>input.dataset.profile==="factor");
+  const groupKeys=new Set(selectedGroups.map(input=>input.dataset.key));
+  const factorKeys=new Set(selectedFactors.map(input=>input.dataset.key));
+  const groupNames=selectedGroups.map(input=>translate(input.dataset.key==="children"?"childrenBabies":input.dataset.key==="older-adults"?"olderAdults":"pets"));
+  const factorNames=selectedFactors.map(input=>translate(input.dataset.key==="outdoor"?"outdoorExposure":input.dataset.key==="limited-water-shade"?"limitedWaterShade":"healthConditions"));
+  const d=weatherData&&weatherData.d;
+  const c=d&&d.current;
+  let uv=null;
+  if(d&&d.hourly&&Array.isArray(d.hourly.time)){
+    const idx=d.hourly.time.findIndex(x=>x>=d.current.time);
+    const i=idx>=0?idx:0;
+    uv=Number(d.hourly.uv_index[i]);
+  }
+  const temperaturePriority=r.name==="ALTO"?2:r.name==="MEDIO"?1:0;
+  const uvPriority=Number.isFinite(uv)&&uv>=8?2:Number.isFinite(uv)&&uv>=6?1:0;
+  const overallPriority=Math.max(temperaturePriority,uvPriority);
+  const priorityName=overallPriority===2?"ALTA":overallPriority===1?"MEDIA":"HABITUAL";
+  const apparent=c?Number(c.apparent_temperature):Number(t);
+  const humidity=c?Number(c.relative_humidity_2m):null;
+  const wind=c?Number(c.wind_speed_10m):null;
+  const items=[];
+  const add=(icon,title,priority,action,reason)=>items.push({icon,title,priority,action,reason});
+  add("💧","Hidratación y recuperación",r.name==="ALTO"?"ALTA":r.name==="MEDIO"?"MEDIA":"HABITUAL",
+    r.name==="ALTO"?"Bebe agua con frecuencia, descansa en un lugar fresco y evita esperar a tener mucha sed.":"Mantén agua disponible y bebe con regularidad, especialmente durante actividad física.",
+    "Temperatura máxima prevista: "+peak.toFixed(1)+" °C; umbrales configurados: medio desde "+settings.medium+" °C y alto desde "+settings.high+" °C.");
+  if(r.name==="ALTO"){
+    add("🛑","Reducir exposición al calor","ALTA","Evita ejercicio intenso y tareas exigentes al aire libre durante las horas más calurosas. Reprograma actividades si es posible.","La temperatura actual o la máxima prevista alcanza el umbral alto del prototipo.");
+    add("🏠","Buscar un entorno fresco","ALTA","Permanece en un espacio ventilado o fresco, utiliza sombra y toma descansos frecuentes.","El pronóstico alcanza el nivel alto definido en la configuración; no constituye una alerta oficial.");
+  }else if(r.name==="MEDIO"){
+    add("🌳","Planificar pausas y sombra","MEDIA","Reduce el esfuerzo en las horas más calurosas y realiza pausas regulares en un lugar sombreado.","La temperatura actual o máxima prevista alcanza el umbral medio.");
+  }else{
+    add("📅","Mantener prevención habitual","HABITUAL","Continúa revisando el pronóstico, hidrátate y limita la exposición solar prolongada.","La temperatura se mantiene por debajo del umbral medio configurado.");
+  }
+  if(Number.isFinite(uv)){
+    if(uv>=8)add("☀️","Protección solar reforzada","ALTA","Busca sombra, usa sombrero, ropa protectora y protector solar; reduce el tiempo de exposición directa.","Índice UV horario consultado: "+uv.toFixed(1)+". El índice UV mide radiación ultravioleta, no temperatura.");
+    else if(uv>=6)add("🧴","Protegerse de la radiación UV","MEDIA","Usa protección solar y ropa que cubra la piel; procura permanecer en sombra.","Índice UV horario consultado: "+uv.toFixed(1)+".");
+    else if(uv>=3)add("🧢","Prevención ante radiación UV","HABITUAL","Considera sombrero, sombra y protección solar si vas a permanecer al aire libre.","Índice UV horario consultado: "+uv.toFixed(1)+".");
+  }
+  if(Number.isFinite(apparent)&&apparent>=settings.medium){
+    add("🌡️","Atender la sensación térmica","MEDIA","Evita esfuerzos prolongados y realiza descansos en un lugar fresco.","La sensación térmica reportada es "+apparent.toFixed(1)+" °C.");
+  }
+  if(Number.isFinite(humidity)&&humidity>=70&&peak>=settings.medium){
+    add("🧭","Ajustar actividad y descansos","MEDIA","Vigila cómo te sientes durante la actividad física y aumenta las pausas en ambientes calurosos.","Humedad relativa reportada: "+Math.round(humidity)+"%; considera junto con la temperatura y la sensación térmica.");
+  }
+  if(Number.isFinite(wind)&&wind>=30){
+    add("💨","Precaución por viento","MEDIA","Asegura objetos livianos y revisa las condiciones antes de realizar actividades al aire libre.","Velocidad del viento reportada: "+wind.toFixed(1)+" km/h.");
+  }
+  if(groupKeys.has("children"))add("","Cuidado de niños y bebés",priorityName,"Ofrece agua con frecuencia, organiza descansos en sombra y evita dejarlos en vehículos o espacios calurosos.","Perfil seleccionado: niños y bebés; prioridad ajustada al nivel de temperatura y UV.");
+  if(groupKeys.has("older-adults"))add("","Acompañamiento a adultos mayores",priorityName,"Comprueba su bienestar con regularidad, facilita agua y un lugar fresco, y evita esfuerzos durante las horas de mayor calor o radiación.","Perfil seleccionado: adultos mayores; prioridad ajustada al nivel de temperatura y UV.");
+  if(groupKeys.has("pets"))add("","Protección de mascotas",priorityName,"Deja agua limpia y sombra disponibles; limita paseos en las horas más calurosas y evita superficies que puedan quemar sus patas.","Perfil seleccionado: mascotas; considera temperatura y radiación UV del pronóstico.");
+  if(factorKeys.has("outdoor"))add("","Exposición al aire libre",priorityName,"Programa tareas en horas más frescas, incorpora pausas frecuentes y alterna sol y sombra; pospón esfuerzos intensos si el nivel es alto.","Condición seleccionada: trabajo al aire libre o exposición prolongada.");
+  if(factorKeys.has("limited-water-shade"))add("","Acceso a agua y sombra",priorityName,"Planifica agua potable y un espacio sombreado o fresco antes de iniciar la actividad; reduce la exposición si no puedes asegurar ambos.","Condición seleccionada: acceso limitado a agua o sombra.");
+  if(factorKeys.has("health"))add("","Afecciones respiratorias o cardíacas",priorityName,"Sigue las indicaciones del profesional de salud, evita esfuerzos durante alertas de calor o UV alto y busca atención si aparecen síntomas preocupantes.","Condición seleccionada: afecciones respiratorias o cardíacas; no modifiques tratamientos por cuenta propia.");
+  if(selectedGroups.length&&selectedFactors.length){
+    add("","Medidas combinadas para el perfil seleccionado",priorityName,
+      "Adapta horarios, pausas, agua y sombra a las personas seleccionadas y a sus condiciones de exposición; con alerta alta, reduce o pospón la actividad exterior.",
+      "Grupos: "+groupNames.join(", ")+". Condicionantes: "+factorNames.join(", ")+". Nivel considerado: temperatura y UV.");
+  }
+  const why=languageText(
+    "Prioridad combinada según temperatura máxima "+peak.toFixed(1)+" °C y "+(Number.isFinite(uv)?"UV horario "+uv.toFixed(1):"UV no disponible")+"; sensación térmica "+(Number.isFinite(apparent)?apparent.toFixed(1)+" °C":"no disponible")+". La puntuación es experimental y no es un diagnóstico médico.",
+    "Combined priority based on a forecast high of "+peak.toFixed(1)+" °C and "+(Number.isFinite(uv)?"hourly UV "+uv.toFixed(1):"unavailable UV")+"; feels-like temperature "+(Number.isFinite(apparent)?apparent.toFixed(1)+" °C":"unavailable")+". The score is experimental and is not a medical diagnosis."
+  );
+  const priorityLabel=translate(overallPriority===2?"priorityHigh":overallPriority===1?"priorityMedium":"priorityUsual");
+  $("recommendation-summary").innerHTML='<strong>'+translate("recommendationPriority")+' '+priorityLabel+'</strong><br>'+esc(why);
+  $("recommendations").innerHTML=items.map(item=>{
+    const cls=item.priority==="ALTA"?"priority-high":item.priority==="MEDIA"?"priority-medium":"";
+    const priorityText=translate(item.priority==="ALTA"?"riskHigh":item.priority==="MEDIA"?"riskMedium":"priorityUsual");
+    return '<div class="recommendation-card '+cls+'"><div class="recommendation-top"><strong>'+item.icon+' '+esc(translateRecommendation(item.title))+'</strong><span class="priority-tag">'+translate("priorityTag")+' '+esc(priorityText)+'</span></div><div>'+esc(translateRecommendation(item.action))+'</div><div class="recommendation-reason"><strong>'+translate("reason")+':</strong> '+esc(translateRecommendation(item.reason))+'</div></div>';
+  }).join("");
+  window.caPreventivePlan={createdAt:stamp(),location:weatherData?weatherData.place.name:"Sin localidad",currentTemperature:Number(t),forecastMaximum:Number(max),risk:r.name,priority:priorityName,uv:Number.isFinite(uv)?uv:null,apparentTemperature:Number.isFinite(apparent)?apparent:null,selectedGroups:groupNames,selectedFactors:factorNames,summary:why,recommendations:items};
+}
+function pdfFilePart(value){
+  return String(value||"Sin_dato").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9]+/g,"_").replace(/^_+|_+$/g,"")||"Sin_dato";
+}
+function pdfDatePart(value){
+  const date=String(value||"");
+  const localMatch=date.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  if(localMatch)return localMatch[3]+"-"+localMatch[2]+"-"+localMatch[1];
+  const parsed=new Date(date);
+  return Number.isNaN(parsed.getTime())?pdfFilePart(date):parsed.toISOString().slice(0,10);
+}
+function createPdfDocument(title,location,date){
+  const report=document.createElement("main");
+  report.className="pdf-report";
+  report.style.cssText="box-sizing:border-box;width:186mm;margin:0;padding:0;background:#fff;color:#1f2937;font-family:Arial,Helvetica,sans-serif;font-size:10pt;line-height:1.45";
+  const brand=document.createElement("p");
+  brand.textContent="CLIMAALERTA PERÚ PRO · REPORTE PREVENTIVO";
+  brand.style.cssText="margin:0 0 5mm;color:#4b647d;font-size:9pt;font-weight:700;letter-spacing:.5px";
+  report.appendChild(brand);
+  const heading=document.createElement("h1");
+  heading.textContent=title;
+  heading.style.cssText="margin:0 0 3mm;color:#111827;font-size:21pt;line-height:1.2";
+  report.appendChild(heading);
+  appendPdfParagraph(report,"Ubicación",location);
+  appendPdfParagraph(report,"Fecha del reporte",date);
+  const divider=document.createElement("hr");
+  divider.style.cssText="margin:5mm 0;border:0;border-top:1px solid #d1d5db";
+  report.appendChild(divider);
+  return report;
+}
+function appendPdfSection(report,title){
+  const section=document.createElement("section");
+  section.className="pdf-section";
+  section.style.cssText="margin:0 0 6mm;break-inside:auto;page-break-inside:auto";
+  const heading=document.createElement("h2");
+  heading.textContent=title;
+  heading.style.cssText="margin:0 0 2.5mm;padding-bottom:1.5mm;border-bottom:1px solid #d1d5db;color:#24364d;font-size:13pt;break-after:avoid;page-break-after:avoid";
+  section.appendChild(heading);
+  report.appendChild(section);
+  return section;
+}
+function appendPdfParagraph(parent,label,value){
+  const row=document.createElement("p");
+  row.style.cssText="margin:1.5mm 0;color:#374151;break-inside:avoid;page-break-inside:avoid";
+  const name=document.createElement("strong");
+  name.textContent=label+": ";
+  row.append(name,document.createTextNode(String(value??"No disponible")));
+  parent.appendChild(row);
+}
+function appendPdfTable(parent,headers,rows){
+  const table=document.createElement("table");
+  table.style.cssText="width:100%;border-collapse:collapse;margin-top:2mm;font-size:9pt";
+  const thead=document.createElement("thead"),headerRow=document.createElement("tr");
+  thead.style.cssText="display:table-header-group";
+  headers.forEach(value=>{
+    const cell=document.createElement("th");
+    cell.textContent=value;
+    cell.style.cssText="padding:2.2mm;text-align:left;background:#e8edf2;border:1px solid #cbd5e1;color:#24364d";
+    headerRow.appendChild(cell);
+  });
+  thead.appendChild(headerRow);table.appendChild(thead);
+  const tbody=document.createElement("tbody");
+  rows.forEach(values=>{
+    const row=document.createElement("tr");
+    row.style.cssText="break-inside:avoid;page-break-inside:avoid";
+    values.forEach(value=>{
+      const cell=document.createElement("td");
+      cell.textContent=String(value??"No disponible");
+      cell.style.cssText="padding:2mm;border:1px solid #d1d5db;color:#374151;vertical-align:top";
+      row.appendChild(cell);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);parent.appendChild(table);
+}
+async function savePdfReport(report,filename){
+  if(typeof window.html2pdf!=="function"){
+    msg("message","No se pudo cargar html2pdf.js. Comprueba tu conexión a internet.");
+    return false;
+  }
+  try{
+    msg("message","Generando reporte PDF…");
+    await window.html2pdf().set({
+      margin:[12,12,12,12],
+      filename:filename,
+      image:{type:"jpeg",quality:.98},
+      html2canvas:{scale:2,useCORS:true,backgroundColor:"#ffffff",scrollX:0,scrollY:0},
+      jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},
+      pagebreak:{mode:["css","legacy"],avoid:[".pdf-keep-together","tr"]}
+    }).from(report).save();
+    msg("message","Reporte PDF descargado.");
+    markGamification("downloadedPdf");
+    return true;
+  }catch(error){
+    msg("message","No se pudo generar el PDF. Inténtalo nuevamente.");
+    console.error("Error al generar reporte PDF.",error);
+    return false;
+  }
+}
+async function exportConsolidatedPdf(){
+  const plan=window.caPreventivePlan;
+  if(!plan||!weatherData){msg("message","Primero consulta una localidad para generar el reporte PDF.");return}
+  const location=formatPlaceName(weatherData.place),today=pdfDatePart(stamp());
+  const report=createPdfDocument("Reporte Técnico Consolidado",location,stamp());
+  const conditions=appendPdfSection(report,"Condiciones meteorológicas");
+  const current=weatherData.d.current;
+  appendPdfTable(conditions,["Métrica","Valor"],[
+    ["Temperatura actual",Number.isFinite(plan.currentTemperature)?plan.currentTemperature.toFixed(1)+" °C":"No disponible"],
+    ["Máxima prevista",Number.isFinite(plan.forecastMaximum)?plan.forecastMaximum.toFixed(1)+" °C":"No disponible"],
+    ["Estado del tiempo",describe(current.weather_code)],
+    ["Humedad relativa",Number.isFinite(Number(current.relative_humidity_2m))?Math.round(current.relative_humidity_2m)+" %":"No disponible"],
+    ["Sensación térmica",plan.apparentTemperature===null?"No disponible":plan.apparentTemperature.toFixed(1)+" °C"],
+    ["Viento",Number.isFinite(Number(current.wind_speed_10m))?Number(current.wind_speed_10m).toFixed(1)+" km/h":"No disponible"],
+    ["Índice UV horario",plan.uv===null?"No disponible":plan.uv.toFixed(1)],
+    ["Riesgo térmico",plan.risk],
+    ["Prioridad preventiva",plan.priority||plan.risk],
+    ["Índice preventivo",$("score").textContent]
+  ]);
+  const hourly=weatherData.d.hourly;
+  const now=weatherData.d.current.time;
+  const firstHour=hourly.time.findIndex(time=>time>=now);
+  const start=firstHour>=0?firstHour:0;
+  const hourlyRows=[];
+  for(let i=start;i<Math.min(start+16,hourly.time.length);i++){
+    const temp=hourly.temperature_2m[i],uv=hourly.uv_index[i];
+    hourlyRows.push([hourly.time[i].slice(11,16),Number(temp).toFixed(1)+" °C",Number.isFinite(Number(uv))?Number(uv).toFixed(1):"No disponible",level(temp).name]);
+  }
+  const forecast=appendPdfSection(report,"Pronóstico por horas");
+  appendPdfTable(forecast,["Hora","Temperatura","Índice UV","Nivel"],hourlyRows);
+  const profile=appendPdfSection(report,"Perfil y factores seleccionados");
+  appendPdfParagraph(profile,"Grupos vulnerables",plan.selectedGroups.length?plan.selectedGroups.join(", "):"Ninguno");
+  appendPdfParagraph(profile,"Condicionantes",plan.selectedFactors.length?plan.selectedFactors.join(", "):"Ninguno");
+  appendPdfParagraph(profile,"Resumen",plan.summary);
+  const advice=appendPdfSection(report,"Consejos activos");
+  plan.recommendations.forEach(item=>{
+    appendPdfParagraph(advice,"["+item.priority+"] "+item.title,item.action);
+    if(item.reason)appendPdfParagraph(advice,"Motivo",item.reason);
+  });
+  const emergency=appendPdfSection(report,"Atención médica inmediata");
+  appendPdfParagraph(emergency,"Indicaciones","Si los síntomas de estrés térmico persisten, empeoran o se presentan signos de desorientación, desmayo o convulsiones, suspenda la actividad y comuníquese de inmediato con las líneas de atención médica:");
+  appendPdfTable(emergency,["Servicio","Número"],[["SAMU (Atención Médica)","106"],["EsSalud","107"],["Bomberos","116"]]);
+  const eventSection=appendPdfSection(report,"Bitácora de eventos");
+  const eventRows=events.length?events.map(event=>[event.time,event.message]):[["Sin eventos registrados","No hay eventos disponibles para esta sesión."]];
+  appendPdfTable(eventSection,["Fecha","Evento"],eventRows);
+  await savePdfReport(report,"Reporte_ClimaAlerta_"+pdfFilePart(location)+"_"+today+".pdf");
+}
+async function exportHistoryPdf(record){
+  if(!record)return;
+  const report=createPdfDocument("Registro histórico de consulta",record.name,record.time);
+  const section=appendPdfSection(report,"Datos guardados");
+  appendPdfParagraph(section,"Temperatura registrada",record.temp+" °C");
+  appendPdfParagraph(section,"Máxima prevista",record.max+" °C");
+  appendPdfParagraph(section,"Nivel de riesgo",record.risk);
+  appendPdfParagraph(section,"Fuente","Historial de consultas de ClimaAlerta Perú PRO");
+  const date=pdfDatePart(record.time);
+  await savePdfReport(report,"Reporte_ClimaAlerta_"+pdfFilePart(record.name)+"_"+date+".pdf");
+}
+function updateVulnerabilityPercentage(){
+  const total=app.querySelectorAll(".vuln").length;
+  const selected=app.querySelectorAll(".vuln:checked").length;
+  const selectedGroups=app.querySelectorAll('.vuln[data-profile="group"]:checked').length;
+  const selectedFactors=app.querySelectorAll('.vuln[data-profile="factor"]:checked').length;
+  const percent=total?Math.round(selected/total*100):0;
+  const color=percent>=70?"#ff6474":percent>=35?"#ffd05a":"#35d99b";
+  const status=selected===0?translate("noRiskSelected"):selectedGroups+" "+translate("groupUnit")+" y "+selectedFactors+" "+translate("factorUnit")+" "+translate("active");
+  $("vuln-percent").textContent=percent+"%";
+  $("vuln-fill").style.width=percent+"%";
+  $("vuln-fill").style.background=color;
+  $("vuln-progress").setAttribute("aria-valuenow",String(percent));
+  $("vuln-status").textContent=selected+" / "+total+" "+translate("selectedItems")+" · "+status;
+}
+function evaluate(){
+  updateVulnerabilityPercentage();
+  if(!weatherData){$("score").textContent="--/100";return}
+  let score=Math.max(weatherData.d.current.temperature_2m,weatherData.d.daily.temperature_2m_max[0])>=settings.high?55:Math.max(weatherData.d.current.temperature_2m,weatherData.d.daily.temperature_2m_max[0])>=settings.medium?30:10;
+  score+=Array.from(app.querySelectorAll(".vuln:checked")).reduce((a,c)=>a+Number(c.value),0);
+  score=Math.min(100,score);$("score").textContent=score+"/100";
+  const cls=score>=70?"high":score>=40?"medium":"low";
+  $("vulnerability").className="notice "+cls;
+  $("vulnerability").innerHTML="<strong>"+(score>=70?translate("preventivePriorityHigh"):score>=40?translate("reinforcePrevention"):translate("usualPrevention"))+"</strong><br>"+translate("experimentalScore")+": "+score+"/100. "+translate("notValidatedMedicalIndex");
+}
+function initMap(){
+  renderMapLegend();
+  if(!window.L){$("map").innerHTML="No se pudo cargar el mapa.";return}
+  map=L.map("map").setView([-9.19,-75.015],5);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"© OpenStreetMap contributors",maxZoom:18}).addTo(map);
+  updateMap();
+}
+function mapLayerInfo(d){
+  if(mapLayer==="uv"){
+    const times=d.hourly.time,now=d.current.time;
+    const index=times.findIndex(time=>time>=now);
+    const uv=Number(d.hourly.uv_index[index>=0?index:0]);
+    if(!Number.isFinite(uv))return{color:"#9bacc3",label:translate("uvIndex"),value:translate("noDataValue")};
+    const item=uv>=8?{color:"#ff6474",label:translate("thresholdVeryHigh")}:uv>=6?{color:"#ff9e4a",label:translate("thresholdHigh")}:uv>=3?{color:"#ffd05a",label:translate("moderate")}:{color:"#35d99b",label:translate("thresholdLow")};
+    return{...item,value:uv.toFixed(1)+" UV"};
+  }
+  if(mapLayer==="clouds"){
+    const clouds=d.current.cloud_cover==null?NaN:Number(d.current.cloud_cover);
+    const rainValue=d.current.rain??d.current.precipitation;
+    const rain=rainValue==null?NaN:Number(rainValue);
+    if(!Number.isFinite(clouds)&&!Number.isFinite(rain))return{color:"#9bacc3",label:translate("cloudRain"),value:translate("noDataValue")};
+    let item;
+    if(rain>=1)item={color:"#557ad7",label:translate("heavyRain")};
+    else if(rain>0)item={color:"#66c5ff",label:translate("lightRain")};
+    else if(clouds>=70)item={color:"#9bacc3",label:translate("cloudy")};
+    else if(clouds>=30)item={color:"#ffd05a",label:translate("partlyCloudy")};
+    else item={color:"#35d99b",label:translate("clearSky")};
+    return{...item,value:(Number.isFinite(clouds)?clouds.toFixed(0)+"% "+translate("clouds"):translate("clouds")+" --")+" · "+(Number.isFinite(rain)?rain.toFixed(1)+" mm "+translate("rain"):translate("rain")+" --")};
+  }
+  const temperature=Number(d.current.temperature_2m);
+  if(!Number.isFinite(temperature))return{color:"#9bacc3",label:translate("temperature"),value:translate("noDataValue")};
+  const risk=level(temperature);
+  return{color:risk.color,label:translate("temperature"),value:fmt(temperature)};
+}
+function renderMapLegend(){
+  const threshold=value=>Number(value).toFixed(1).replace(/\.0$/,"");
+  const layers={
+    temperature:[
+      {color:"#35d99b",label:translate("thresholdLow")+" < "+settings.medium+" °C"},
+      {color:"#ffd05a",label:translate("thresholdMedium")+" "+threshold(settings.medium)+"–<"+threshold(settings.high)+" °C"},
+      {color:"#ff6474",label:translate("thresholdHigh")+" ≥ "+settings.high+" °C"}
+    ],
+    uv:[
+      {color:"#35d99b",label:translate("thresholdLow")+" < 3"},{color:"#ffd05a",label:translate("moderate")+" 3–5"},
+      {color:"#ff9e4a",label:translate("thresholdHigh")+" 6–7"},{color:"#ff6474",label:translate("thresholdVeryHigh")+" ≥ 8"}
+    ],
+    clouds:[
+      {color:"#35d99b",label:translate("clearSky")},{color:"#ffd05a",label:translate("partlyCloudy")},
+      {color:"#9bacc3",label:translate("cloudy")},{color:"#66c5ff",label:translate("lightRain")},
+      {color:"#557ad7",label:translate("heavyRain")}
+    ]
+  };
+  $("map-legend").innerHTML=layers[mapLayer].map(item=>'<span class="map-legend-item"><i class="map-legend-swatch" style="background:'+item.color+'"></i>'+item.label+'</span>').join("");
+}
+function normalizeDepartmentName(name){
+  return String(name||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/\b(DEPARTAMENTO\s+DE|DEPARTAMENTO|REGION\s+DE|REGION|PROVINCIA\s+CONSTITUCIONAL\s+DEL)\b/g," ").replace(/[^A-Z]+/g," ").trim();
+}
+function pointInRing(lon,lat,ring){
+  let inside=false;
+  for(let i=0,j=ring.length-1;i<ring.length;j=i++){
+    const [xi,yi]=ring[i],[xj,yj]=ring[j];
+    if((yi>lat)!==(yj>lat)&&lon<(xj-xi)*(lat-yi)/(yj-yi)+xi)inside=!inside;
+  }
+  return inside;
+}
+function geometryContainsPoint(geometry,lat,lon){
+  const polygons=geometry.type==="Polygon"?[geometry.coordinates]:geometry.type==="MultiPolygon"?geometry.coordinates:[];
+  return polygons.some(rings=>pointInRing(lon,lat,rings[0]||[])&&!rings.slice(1).some(ring=>pointInRing(lon,lat,ring)));
+}
+function featureMatchesLocation(feature,place){
+  if(!place)return false;
+  const properties=feature.properties||{};
+  const featureName=normalizeDepartmentName(properties.NOMBDEP||properties.name||properties.NAME_1);
+  const regionName=normalizeDepartmentName(place.region);
+  if(regionName&&featureName===regionName)return true;
+  const lat=Number(place.lat),lon=Number(place.lon);
+  return Number.isFinite(lat)&&Number.isFinite(lon)&&geometryContainsPoint(feature.geometry,lat,lon);
+}
+async function updateMap(){
+  if(!map)return;
+  const updateId=++mapUpdateId;
+  try{
+    if(!departmentGeoJsonPromise){
+      departmentGeoJsonPromise=fetch("https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson").then(response=>{
+        if(!response.ok)throw Error("No se pudo cargar el GeoJSON departamental.");
+        return response.json();
+      }).then(data=>{
+        if(data.type!=="FeatureCollection"||!Array.isArray(data.features))throw Error("El GeoJSON departamental no tiene el formato esperado.");
+        return data;
+      }).catch(error=>{departmentGeoJsonPromise=null;throw error});
+    }
+    const geojson=await departmentGeoJsonPromise;
+    if(updateId!==mapUpdateId||!map)return;
+    const place=weatherData&&weatherData.place;
+    const data=weatherData&&weatherData.d;
+    const selectedFeature=place&&geojson.features.find(feature=>featureMatchesLocation(feature,place));
+    const layer=data?mapLayerInfo(data):{color:"#66c5ff",label:"Región consultada",value:"Sin datos meteorológicos"};
+    if(departmentLayer)map.removeLayer(departmentLayer);
+    departmentLayer=L.geoJSON(geojson,{
+      style:feature=>feature===selectedFeature?{color:layer.color,weight:2.5,fillColor:layer.color,fillOpacity:.45}:{color:"#8293a8",weight:.8,fillColor:"#8293a8",fillOpacity:.015},
+      onEachFeature:(feature,featureLayer)=>{
+        if(feature===selectedFeature){
+          const name=feature.properties.NOMBDEP||place.region||place.name;
+          featureLayer.bindPopup("<b>"+esc(name)+"</b><br>"+esc(layer.label)+": "+esc(layer.value));
+        }
+      }
+    }).addTo(map);
+  }catch(error){
+    if(updateId===mapUpdateId)console.warn("No se pudo actualizar la capa GeoJSON del mapa.",error);
+  }
+}
+function applyRules(){
+  const medium=$("medium-threshold").valueAsNumber,high=$("high-threshold").valueAsNumber;
+  $("rules-result").classList.remove("hidden");
+  if(!Number.isFinite(medium)||!Number.isFinite(high)||medium<15||medium>45||high<16||high>50||medium>=high){
+    $("rules-result").textContent=languageText("Valores inválidos. El umbral alto debe ser mayor que el medio.","Invalid values. The high threshold must be greater than the medium threshold.");return;
+  }
+  settings={medium,high};
+  markGamification("usedRules");
+  renderMapLegend();
+  $("rules-result").textContent=languageText("Umbrales aplicados: medio desde "+medium+" °C y alto desde "+high+" °C. Son criterios de demostración.","Thresholds applied: medium from "+medium+" °C and high from "+high+" °C. These are for demonstration.");
+  log(languageText("Umbrales configurados: medio "+medium+" °C, alto "+high+" °C.","Thresholds configured: medium "+medium+" °C, high "+high+" °C."));
+  if(weatherData)renderMain(weatherData.place,weatherData.d,false);
+  else updateMap();
+}
+async function sirenCycle(){
+  if(!sirenOn||!audioCtx)return;
+  const now=audioCtx.currentTime;
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+  osc.type="sawtooth";
+  osc.frequency.setValueAtTime(650,now);
+  osc.frequency.linearRampToValueAtTime(1100,now+.45);
+  osc.frequency.linearRampToValueAtTime(650,now+.9);
+  gain.gain.setValueAtTime(.0001,now);
+  gain.gain.exponentialRampToValueAtTime(.3,now+.03);
+  gain.gain.setValueAtTime(.3,now+.72);
+  gain.gain.exponentialRampToValueAtTime(.0001,now+.92);
+  osc.connect(gain);gain.connect(audioCtx.destination);
+  osc.start(now);osc.stop(now+.95);oscillators.push(osc);
+  sirenTimer=setTimeout(sirenCycle,1000);
+}
+async function unlockAudio(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)throw Error("Este navegador no admite audio Web Audio.");
+  if(!audioCtx)audioCtx=new AC();
+  if(audioCtx.state==="suspended")await audioCtx.resume();
+  if(audioCtx.state!=="running")throw Error("El audio no está disponible. Vuelve a pulsar Consultar o Mi ubicación.");
+}
+async function startSiren(automatic){
+  stopSiren(false);
+  const requestId=++sirenRequestId;
+  try{
+    await unlockAudio();
+    if(requestId!==sirenRequestId)return;
+    sirenOn=true;sirenAutomatic=automatic;$("alarm-light").classList.add("on");
+    if(!automatic)markGamification("testedSiren");
+    $("alarm-heading").textContent=automatic?translate("automaticSirenAlert"):translate("sirenTestActive");
+    $("alarm-description").textContent=translate("sirenContinues");
+    log(automatic?"Sirena automática activada.":"Prueba manual de sirena activada.");
+    sirenCycle();
+  }catch(e){$("alarm-description").textContent=e.message}
+}
+function stopSiren(record=true){
+  sirenRequestId++;
+  const wasAutomatic=sirenAutomatic;
+  sirenOn=false;sirenAutomatic=false;if(sirenTimer)clearTimeout(sirenTimer);sirenTimer=null;
+  oscillators.forEach(o=>{try{o.stop()}catch(e){}});oscillators=[];
+  $("alarm-light").classList.toggle("on",Boolean(weatherData&&weatherData.d.current.temperature_2m>=ALARM_TEMPERATURE_THRESHOLD));
+  if(wasAutomatic)$("alarm-heading").textContent=translate("highHeatAlert");
+  $("alarm-description").textContent=translate("sirenStopped");
+  if(record&&currentUser)log("Sirena detenida manualmente.");
+}
+function renderHeatAlertMessage(){
+  if(!heatAlertDetails)return;
+  const {place,temperature,source}=heatAlertDetails;
+  const key=source==="geolocation"?"locationHeatAlertMessage":"manualHeatAlertMessage";
+  $("heat-alert-message").textContent=translate(key)
+    .replace("{place}",formatPlaceName(place))
+    .replace("{temperature}",temperature);
+}
+function showHeatAlert(place,temperature,source,force=false){
+  const key=[source,normalizeLocationName(formatPlaceName(place)),temperature].join("|");
+  if(!force&&key===heatAlertKey)return;
+  heatAlertKey=key;
+  heatAlertDetails={place,temperature:Number(temperature).toFixed(1),source};
+  renderHeatAlertMessage();
+  $("heat-alert-modal").hidden=false;
+  $("heat-alert-close").focus();
+}
+function dismissHeatAlert(){
+  stopSiren();
+  $("heat-alert-modal").hidden=true;
+}
+function checkAlert(t,max,place,source=currentWeatherSource,prompt=false){
+  const peak=Math.max(t,max);
+  if(t<ALARM_TEMPERATURE_THRESHOLD){
+    heatAlertKey="";
+    $("heat-alert-modal").hidden=true;
+    if(sirenAutomatic)stopSiren(false);
+  }
+  if(t>=ALARM_TEMPERATURE_THRESHOLD){
+    $("alarm-heading").textContent=translate("highHeatAlert");
+    $("alarm-description").textContent=translate("highHeatDescription");
+    $("alarm-light").classList.add("on");
+    if(place)showHeatAlert(place,t,source,prompt);
+    if($("auto-sound").checked&&!sirenOn&&(prompt||Date.now()-lastAutoAlarm>120000)){
+      lastAutoAlarm=Date.now();startSiren(true);log("Se alcanzó el umbral alto de temperatura.");
+    }else if(!$("auto-sound").checked){log("Umbral alto detectado; sirena automática desactivada.")}
+  }else if(peak>=settings.medium){
+    heatAlertKey="";
+    $("alarm-heading").textContent=translate("heatCaution");
+    $("alarm-description").textContent=translate("heatCautionDescription");
+    $("alarm-light").classList.remove("on");
+  }else{
+    heatAlertKey="";
+    $("alarm-heading").textContent=translate("monitoringActive");
+    $("alarm-description").textContent=translate("monitoringActiveDescription");
+    $("alarm-light").classList.remove("on");
+  }
+}
+function startMonitoring(){
+  monitoring=true;$("monitor").textContent=translate("activeMonitoring");
+  log("Monitoreo activado. La página debe permanecer abierta.");
+  if(weatherData)checkAlert(weatherData.d.current.temperature_2m,weatherData.d.daily.temperature_2m_max[0],weatherData.place,currentWeatherSource);
+  if(monitorTimer)clearInterval(monitorTimer);
+  monitorTimer=setInterval(async()=>{
+    if(!weatherData||document.hidden)return;
+    try{
+      const d=await getWeather(weatherData.place.lat,weatherData.place.lon);
+      renderMain(weatherData.place,d,false,currentWeatherSource);
+    }catch(e){log("Falló la actualización automática.")}
+  },5*60*1000);
+}
+$("search").onclick=search;$("refresh").onclick=search;$("district").addEventListener("keydown",e=>{if(e.key==="Enter")search()});
+$("district").addEventListener("input",scheduleLocalitySuggestions);
+$("district").addEventListener("change",e=>{
+  const selected=Array.from($("peru-departments").options).some(option=>option.dataset.locality&&option.value===e.target.value.trim());
+  if(selected)search();
+});
+$("map-layer").addEventListener("change",e=>{mapLayer=e.target.value;renderMapLegend();updateMap()});
+$("dashboard").querySelectorAll(".dashboard-tab").forEach((tab,index,tabs)=>{
+  tab.addEventListener("click",()=>switchDashboardView(tab.dataset.view));
+  tab.addEventListener("keydown",event=>{
+    const direction=event.key==="ArrowRight"?1:event.key==="ArrowLeft"?-1:0;
+    if(!direction)return;
+    event.preventDefault();
+    const next=tabs[(index+direction+tabs.length)%tabs.length];
+    next.focus();switchDashboardView(next.dataset.view);
+  });
+});
+$("export-plan-pdf").onclick=exportConsolidatedPdf;
+$("history").addEventListener("click",e=>{const button=e.target.closest("[data-history-pdf]");if(!button)return;const record=history[Number(button.dataset.historyPdf)];if(record)exportHistoryPdf(record)});
+$("map-refresh").onclick=updateMap;$("apply-rules").onclick=applyRules;$("evaluate").onclick=()=>{evaluate();if(weatherData)recommendations(weatherData.d.current.temperature_2m,weatherData.d.daily.temperature_2m_max[0]);log("Evaluación preventiva realizada.")};
+$("test-siren").onclick=()=>startSiren(false);$("stop-siren").onclick=dismissHeatAlert;$("monitor").onclick=startMonitoring;
+$("heat-alert-close").onclick=dismissHeatAlert;$("heat-alert-stop").onclick=dismissHeatAlert;
+$("heat-alert-modal").addEventListener("click",event=>{if(event.target===$("heat-alert-modal"))dismissHeatAlert()});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&!$("heat-alert-modal").hidden)dismissHeatAlert();
+});
+$("senamhi").onclick=()=>window.open("https://www.senamhi.gob.pe/","_blank","noopener,noreferrer");
+$("geolocate").onclick=()=>{
+  unlockAudio().catch(e=>{$("alarm-description").textContent="No se pudo habilitar el audio: "+e.message});
+  if(!navigator.geolocation){msg("message",languageText("Geolocalización no disponible.","Geolocation is unavailable."));return}
+  msg("message",languageText("Solicitando permiso de ubicación…","Requesting location permission…"));
+  const requestId=++weatherRequestId;
+  $("search").disabled=true;
+  navigator.geolocation.getCurrentPosition(async p=>{
+    const lat=p.coords.latitude,lon=p.coords.longitude;
+    if(!Number.isFinite(lat)||!Number.isFinite(lon)){
+      if(requestId===weatherRequestId){
+        msg("message",languageText("El navegador devolvió coordenadas GPS inválidas.","The browser returned invalid GPS coordinates."));
+        $("search").disabled=false;
+      }
+      return;
+    }
+    const place={name:languageText("Mi ubicación actual","Current location"),region:"",lat,lon};
+    $("district").value=formatPlaceName(place);
+    const weatherRequest=getWeather(lat,lon);
+    const placeRequest=reverseGeocode(lat,lon).catch(()=>null);
+    try{
+      const d=await weatherRequest;
+      if(requestId!==weatherRequestId)return;
+      renderMain(place,d,true,"geolocation");
+      placeRequest.then(resolvedPlace=>{
+        if(resolvedPlace)updateGeolocatedPlaceName(resolvedPlace,requestId);
+      });
+    }
+    catch(e){if(requestId===weatherRequestId)msg("message",languageText("No se pudo consultar el pronóstico de la ubicación.","Could not retrieve the location forecast."))}
+    finally{if(requestId===weatherRequestId)$("search").disabled=false}
+  },()=>{
+    if(requestId!==weatherRequestId)return;
+    msg("message",languageText("No se obtuvo permiso. Busca un distrito manualmente.","Permission was not granted. Search for a district manually."));
+    $("search").disabled=false;
+  },{timeout:10000,maximumAge:60000});
+};
+$("clear-events").onclick=()=>{if(confirm("¿Borrar eventos?")){events=[];saveUserData();renderEvents()}};
+$("clear-history").onclick=()=>{if(confirm("¿Borrar historial?")){history=[];saveUserData();renderHistory()}};
+const achievementToast=$("achievement-toast");
+achievementToast.addEventListener("click",event=>{
+  if(event.target.closest("#achievement-toast-close"))return;
+  dismissAchievementToast(true);
+});
+achievementToast.addEventListener("keydown",event=>{
+  if(event.target.closest("#achievement-toast-close"))return;
+  if(event.key==="Enter"||event.key===" "){
+    event.preventDefault();
+    dismissAchievementToast(true);
+  }
+});
+$("achievement-toast-close").addEventListener("click",event=>{
+  event.stopPropagation();
+  dismissAchievementToast();
+});
+app.querySelectorAll(".vuln").forEach(c=>c.addEventListener("change",()=>{c.closest(".profile-chip").classList.toggle("selected",c.checked);if(c.checked&&c.dataset.profile==="group")markGamification("selectedVulnerable");updateVulnerabilityPercentage();evaluate();if(weatherData)recommendations(weatherData.d.current.temperature_2m,weatherData.d.daily.temperature_2m_max[0])}));
+if("IntersectionObserver"in window){
+  const footerObserver=new IntersectionObserver(entries=>{
+    if(entries.some(entry=>entry.isIntersecting)&&currentUser&&!gamification?.exploredFooter){
+      markGamification("exploredFooter");
+      footerObserver.disconnect();
+    }
+  });
+  footerObserver.observe(app.querySelector(".footer"));
+}
+updateVulnerabilityPercentage();
+window.addEventListener("beforeunload",()=>{if(monitorTimer)clearInterval(monitorTimer);stopSiren(false)});
+
+const session=read(SESSION_KEY,null);
+if(session&&session.email){
+  const user=accounts().find(a=>a.email===session.email);
+  if(user)showDashboard(user);else showAuth("login");
+}else showAuth("login");
+})();
+</script>
